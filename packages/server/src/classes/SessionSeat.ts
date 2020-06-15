@@ -3,9 +3,12 @@ import { Session } from "inspector";
 import { Reservation } from "./Reservation";
 import { Seat } from "./Seat";
 
-@modelOptions({ schemaOptions: { collection: "session-seats" } })
+@modelOptions({ schemaOptions: { collection: "session-seats", _id: false } })
 @index({ session: 1, reservation: 1, seat: 1 })
 export class SessionSeat {
+    @prop({ index: true, unique: true })
+    id!: string;
+
     @prop({ ref: Session, index: true })
     session!: Ref<Session>;
 
