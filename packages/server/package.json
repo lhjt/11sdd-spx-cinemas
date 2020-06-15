@@ -1,0 +1,43 @@
+{
+    "name": "server",
+    "version": "0.0.1",
+    "description": "",
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "scripts": {
+        "prestart": "tsc",
+        "start": "cross-env NODE_ENV=production node .",
+        "dev": "tsc-watch --onSuccess \"node .\"",
+        "create-docker-image": "docker build --tag spx-server .",
+        "preexport-docker-image": "docker build --tag spx-server .",
+        "export-docker-image": "docker save --output spx-server-image.tar spx-server"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "apollo-server-express": "^2.14.4",
+        "class-validator": "^0.12.2",
+        "express": "^4.17.1",
+        "graphql": "^15.1.0",
+        "mongoose": "^5.9.18",
+        "reflect-metadata": "^0.1.13",
+        "tsc-watch": "^4.2.3",
+        "type-graphql": "^1.0.0-rc.2",
+        "typegoose": "^5.9.1",
+        "typescript": "^3.8.3",
+        "uuid": "^8.1.0"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.6",
+        "@types/mongoose": "^5.7.24",
+        "@types/node": "^13.11.0",
+        "@types/uuid": "^8.0.0",
+        "@typescript-eslint/eslint-plugin": "^2.27.0",
+        "@typescript-eslint/parser": "^2.27.0",
+        "cross-env": "^7.0.2",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.1",
+        "eslint-plugin-prettier": "^3.1.2",
+        "prettier": "^2.0.4"
+    }
+}
