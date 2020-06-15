@@ -1,4 +1,6 @@
 # SPX Cinemas Monorepo
+![Assessment Task](https://img.shields.io/badge/Assessment-SDD-blue.svg?style=for-the-badge&logo=microsoft)
+![Status](https://img.shields.io/badge/Status-Started-brightgreen?style=for-the-badge)
 
 This is the year 11 SDD assessment task 2 monorepo that contains both the frontend client and the backend server. In order to ensure that the project runs properly, you must have `yarn` installed as this project uses `yarn workspaces`.
 
