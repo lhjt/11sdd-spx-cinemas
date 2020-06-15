@@ -1,5 +1,6 @@
-import { arrayProp, getModelForClass, index, prop } from "@typegoose/typegoose";
+import { arrayProp, getModelForClass, index, modelOptions, prop } from "@typegoose/typegoose";
 
+@modelOptions({ schemaOptions: { collection: "movies" } })
 @index({ name: "text" })
 export class Movie {
     @prop()
