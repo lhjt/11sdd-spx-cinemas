@@ -1,7 +1,7 @@
-import { arrayProp, getModelForClass, index, modelOptions, prop } from "@typegoose/typegoose";
+import { getModelForClass, index, modelOptions, prop } from "@typegoose/typegoose";
 
-@modelOptions({ schemaOptions: { collection: "movies", _id: false } })
-@index({ name: "text" })
+@modelOptions({ schemaOptions: { collection: "movies", id: false } })
+@index({ name: "text" }, { name: "movieNameIndex" })
 export class Movie {
     @prop({ index: true, unique: true })
     id!: string;
@@ -9,7 +9,7 @@ export class Movie {
     @prop()
     name!: string;
 
-    @arrayProp({ items: String })
+    @prop({ type: String })
     genre!: string[];
 
     @prop()

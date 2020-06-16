@@ -1,7 +1,7 @@
 import { getModelForClass, modelOptions, prop, Ref } from "@typegoose/typegoose";
 import { Theatre } from "./Theatre";
 
-@modelOptions({ schemaOptions: { collection: "seats", _id: false } })
+@modelOptions({ schemaOptions: { collection: "seats", id: false } })
 export class Seat {
     @prop({ index: true, unique: true })
     id!: string;

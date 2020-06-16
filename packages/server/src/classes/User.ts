@@ -5,7 +5,7 @@ export enum Role {
     user = "user",
 }
 
-@modelOptions({ schemaOptions: { collection: "users", _id: false } })
+@modelOptions({ schemaOptions: { collection: "users", id: false } })
 export class User {
     @prop({ index: true, unique: true })
     id!: string;

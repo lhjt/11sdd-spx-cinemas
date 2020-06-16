@@ -3,8 +3,8 @@ import { Session } from "inspector";
 import { Reservation } from "./Reservation";
 import { Seat } from "./Seat";
 
-@modelOptions({ schemaOptions: { collection: "session-seats", _id: false } })
-@index({ session: 1, reservation: 1, seat: 1 })
+@modelOptions({ schemaOptions: { collection: "session-seats", id: false } })
+@index({ session: 1, reservation: 1, seat: 1 }, { name: "sessionReservationSeatIndex" })
 export class SessionSeat {
     @prop({ index: true, unique: true })
     id!: string;

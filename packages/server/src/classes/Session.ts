@@ -2,7 +2,7 @@ import { getModelForClass, modelOptions, prop, Ref } from "@typegoose/typegoose"
 import { Movie } from "./Movie";
 import { Theatre } from "./Theatre";
 
-@modelOptions({ schemaOptions: { collection: "sessions", _id: false } })
+@modelOptions({ schemaOptions: { collection: "sessions", id: false } })
 export class Session {
     @prop({ index: true, unique: true })
     id!: string;
