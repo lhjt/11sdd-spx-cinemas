@@ -7,6 +7,8 @@ mongoose
         useUnifiedTopology: true,
         useCreateIndex: true,
     })
-    .then(() => {
+    .then(async () => {
         mongoose.set("debug", true);
+
+        console.log("Successfully connected to the database");
     });
