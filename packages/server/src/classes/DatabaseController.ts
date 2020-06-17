@@ -1,4 +1,5 @@
 import { mongoose } from "@typegoose/typegoose";
+import { SessionsView } from "../schemas/SessionsView";
 import { Logger } from "./Logger";
 
 export class DatabaseController {
@@ -32,6 +33,6 @@ export class DatabaseController {
      * Instantiate the views for the database.
      */
     private static async createViews(): Promise<void> {
-        Logger.warn("DatabaseController.createViews() is currently a stub");
+        SessionsView.createView(this._connection);
     }
 }
