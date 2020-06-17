@@ -1,5 +1,4 @@
 import { mongoose } from "@typegoose/typegoose";
-import { SessionsView } from "../schemas/SessionsView";
 import { Logger } from "./Logger";
 
 export class DatabaseController {
@@ -33,6 +32,46 @@ export class DatabaseController {
      * Instantiate the views for the database.
      */
     private static async createViews(): Promise<void> {
-        SessionsView.createView(this._connection);
+        await this.createSessionsView();
+    }
+
+    /**
+     * Creates a new MongoDB `View` for `SessionsView`.
+     * @param connection Connection to the database.
+     */
+    private static async createSessionsView(): Promise<void> {
+        if (
+            (await this._connection.db.listCollections({ name: "sessions" }).toArray()).length !== 1
+        ) {
+            await this._connection.db.createCollection("sessions");
+            Logger.info("Sessions had to be created");
+        }
+        Logger.info("Creating the testView collection");
+        await this._connection.db.dropCollection("testView");
+        await this._connection.db.createCollection("testView", {
+            viewOn: "sessions",
+            pipeline: [
+                { $match: {} },
+                {
+                    $lookup: {
+                        from: "movies",
+                        localField: "movie",
+                        foreignField: "_id",
+                        as: "movie",
+                    },
+                },
+                { $unwind: { path: "$movie", preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: "theatres",
+                        localField: "theatre",
+                        foreignField: "_id",
+                        as: "theatre",
+                    },
+                },
+                { $unwind: { path: "$theatre", preserveNullAndEmptyArrays: true } },
+            ],
+        });
+        Logger.success("Created SessionsView View");
     }
 }

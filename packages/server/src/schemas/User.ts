@@ -2,7 +2,7 @@ import { getModelForClass, modelOptions, prop } from "@typegoose/typegoose";
 
 export enum Role {
     admin = "admin",
-    user = "user",
+    customer = "customer",
 }
 
 @modelOptions({ schemaOptions: { collection: "users", id: false } })
