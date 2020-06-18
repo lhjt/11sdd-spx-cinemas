@@ -6,7 +6,11 @@
         ],
         "nohoist": [
             "**/@types",
-            "**/@types/**"
+            "**/@types/**",
+            "**/apollo-server-express",
+            "**/apollo-server-express/**",
+            "**/graphql",
+            "**/graphql/**"
         ]
     }
 }

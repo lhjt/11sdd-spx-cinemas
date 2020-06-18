@@ -1,33 +1,39 @@
-import { buildSchema, modelOptions, prop } from "@typegoose/typegoose";
-import { Document, model as newMongooseModel } from "mongoose";
+import { addModelToTypegoose, buildSchema, modelOptions, prop } from "@typegoose/typegoose";
+import { model as newMongooseModel } from "mongoose";
+import { Field, ID, ObjectType } from "type-graphql";
 import { Movie } from "../Movie";
 import { SessionSeat } from "../SessionSeat";
 import { Theatre } from "../Theatre";
 
+@ObjectType()
 @modelOptions({ schemaOptions: { collection: "sessionsView", id: false } })
 export class SessionsView {
+    @Field(() => ID)
     @prop()
     id!: string;
 
+    @Field(() => Movie)
     @prop()
     movie!: Movie;
 
+    @Field(() => Theatre)
     @prop()
     theatre!: Theatre;
 
+    @Field(() => Date)
     @prop()
     startTime!: Date;
 
+    @Field(() => Date)
     @prop()
     endTime!: Date;
 
+    @Field(() => [SessionSeat])
     @prop()
     reservedSeats!: SessionSeat[];
 }
 
-export const SessionsViewModel = newMongooseModel<typeof SessionsView & Document>(
-    "sessionsView",
-    buildSchema(SessionsView),
-    "sessionsView",
-    true
+export const SessionsViewModel = addModelToTypegoose(
+    newMongooseModel("sessionsView", buildSchema(SessionsView), "sessionsView", true),
+    SessionsView
 );
