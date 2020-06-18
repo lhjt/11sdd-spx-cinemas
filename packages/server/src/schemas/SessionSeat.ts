@@ -18,7 +18,7 @@ export class SessionSeat {
     @prop({ index: true })
     reserved!: boolean;
 
-    @prop({ ref: Reservation, index: true })
+    @prop({ ref: "Reservation", index: true })
     reservation!: Ref<Reservation>;
 }
 

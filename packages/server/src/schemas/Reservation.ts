@@ -1,5 +1,5 @@
 import { getModelForClass, modelOptions, prop, Ref } from "@typegoose/typegoose";
-import { Session } from "inspector";
+import { SessionSeat } from "./SessionSeat";
 import { User } from "./User";
 
 @modelOptions({ schemaOptions: { collection: "reservations", id: false } })
@@ -10,8 +10,8 @@ export class Reservation {
     @prop({ ref: User, index: true })
     user!: Ref<User>;
 
-    @prop({ ref: Session, index: true })
-    session!: Ref<Session>;
+    @prop({ ref: SessionSeat, index: true })
+    seats!: Ref<SessionSeat>[];
 }
 
 export const ReservationModel = getModelForClass(Reservation);

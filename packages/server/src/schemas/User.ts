@@ -27,6 +27,9 @@ export class User {
 
     @prop({ enum: Role })
     role!: Role;
+
+    @prop({ index: true })
+    password!: string;
 }
 
 export const UserModel = getModelForClass(User);
