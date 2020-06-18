@@ -3,7 +3,7 @@ import { Field, ID, ObjectType } from "type-graphql";
 import { Movie } from "./Movie";
 import { Theatre } from "./Theatre";
 
-export interface BaseSession {
+export interface SessionBase {
     id: string;
 
     movie: Movie;
@@ -40,3 +40,4 @@ export class Session {
 }
 
 export const SessionModel = getModelForClass(Session);
+// export const SessionModel = addModelToTypegoose(newMongooseModel("session", , "sessions"), Session);

@@ -2,7 +2,7 @@ import { addModelToTypegoose, buildSchema, modelOptions, prop } from "@typegoose
 import { model as newMongooseModel } from "mongoose";
 import { Field, ID, ObjectType } from "type-graphql";
 import { Movie } from "../Movie";
-import { SessionSeat } from "../SessionSeat";
+import { BaseSessionSeat, SessionSeat } from "../SessionSeat";
 import { Theatre } from "../Theatre";
 
 @ObjectType()
@@ -30,7 +30,7 @@ export class SessionsView {
 
     @Field(() => [SessionSeat])
     @prop()
-    reservedSeats!: SessionSeat[];
+    reservedSeats!: BaseSessionSeat[];
 }
 
 export const SessionsViewModel = addModelToTypegoose(

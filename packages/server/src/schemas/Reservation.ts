@@ -14,6 +14,10 @@ export class Reservation {
     @prop({ ref: User, index: true })
     user!: Ref<User>;
 
+    @Field()
+    @prop({ index: true })
+    userId!: string;
+
     @Field(() => SessionSeat)
     @prop({ ref: SessionSeat, index: true })
     seats!: Ref<SessionSeat>[];

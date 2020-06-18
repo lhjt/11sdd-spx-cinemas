@@ -12,7 +12,15 @@ import { Logger } from "../Logger";
 
 export async function createUsers(quantity: number): Promise<void> {
     const promises: Promise<unknown>[] = [];
+    const array: number[] = [];
     for (let index = 0; index < quantity; index++) {
+        array.push(index);
+    }
+    const reservationDocuments = [];
+    const userDocuments = [];
+    // for (const _ of array) {
+    for (let index = 0; index < quantity; index++) {
+        if (index % 100 === 0) console.log(`At:`, index);
         const user = new User();
         user.id = uuid.v4();
         user.firstName = faker.name.firstName();
@@ -22,16 +30,29 @@ export async function createUsers(quantity: number): Promise<void> {
         user.role = Role.customer;
         user.password = faker.random.alphaNumeric(12);
         const userDocument = new UserModel(user);
-        promises.push(userDocument.save());
+        // promises.push(userDocument.save());
+
+        // await userDocument.save();
+        userDocuments.push(userDocument);
+
+        // console.group("User Saver Round");
+        // console.log("user Saved to the database");
 
         const reservation = new Reservation();
         reservation.id = uuid.v4();
         reservation.seats = [];
         reservation.user = userDocument;
+        reservation.userId = userDocument.id;
         const reservationDocument = new ReservationModel(reservation);
 
         const seats = [];
+        const numArray: number[] = [];
+
         for (let j = 0; j < 3; j++) {
+            numArray.push(j);
+        }
+        // for (const _ of numArray) {
+        for (let index = 0; index < 3; index++) {
             const sessionSeat = new SessionSeat();
             sessionSeat.id = uuid.v4();
             sessionSeat.reservation = reservationDocument;
@@ -49,14 +70,32 @@ export async function createUsers(quantity: number): Promise<void> {
             sessionSeat.session = session;
             // console.log(sessionSeat.session);
             const sessionSeatDocument = new SeatSessionModel(sessionSeat);
-            promises.push(sessionSeatDocument.save());
-            seats.push(sessionSeatDocument._id);
+            // promises.push(sessionSeatDocument.save());
+
+            // await sessionSeatDocument.save();
+
+            // console.log("Saved Session Seat");
+            // console.log("DB Check:", newDoc?.id);
+            seats.push(sessionSeatDocument);
         }
+
+        SeatSessionModel.insertMany(seats);
+
         reservationDocument.seats = [...seats];
-        promises.push(reservationDocument.save());
+        // promises.push(reservationDocument.save());
+
+        // await reservationDocument.save();
+        reservationDocuments.push(reservationDocument);
+
+        // console.log("Saved reservation document");
+        // console.groupEnd();
     }
+    console.log("Inserting documents");
+    await ReservationModel.insertMany(reservationDocuments);
+    await UserModel.insertMany(userDocuments);
     Logger.success("Created Reservation and Users");
-    await Promise.all(promises);
+    // await Promise.all(promises);
+    // console.log("Length of changes:", promises);
 }
 
 export async function createSessions(quantity: number): Promise<void> {
@@ -73,7 +112,9 @@ export async function createSessions(quantity: number): Promise<void> {
         )[0];
         promises.push(new SessionModel(session).save());
     }
+    console.log("Awaiting promises");
     await Promise.all(promises);
+    console.log("Promise await complete");
 }
 
 export async function createMovies(quantity: number): Promise<void> {

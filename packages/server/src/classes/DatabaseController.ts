@@ -49,7 +49,11 @@ export class DatabaseController {
             await this._connection.db.createCollection("sessions");
             Logger.info("Sessions had to be created");
         }
-        this._connection.db.dropCollection("sessionsView");
+        try {
+            await this._connection.db.dropCollection("sessionsView");
+        } catch (error) {
+            Logger.info("Collection did not exist, continuing");
+        }
         await this._connection.db.createCollection("sessionsView", {
             viewOn: "sessions",
             pipeline: [
@@ -98,14 +102,21 @@ export class DatabaseController {
      */
     private static async createPopulatedSessionSeatsView(): Promise<void> {
         if (
-            (await this._connection.db.listCollections({ name: "session-seats" }).toArray())
-                .length !== 1
+            (
+                await this._connection.db
+                    .listCollections({ name: "populated-session-seats" })
+                    .toArray()
+            ).length !== 1
         ) {
-            await this._connection.db.createCollection("session-seats");
-            Logger.info("Session-seats had to be created");
+            await this._connection.db.createCollection("populated-session-seats");
+            Logger.info("populated-Session-seats had to be created");
         }
-        await this._connection.db.dropCollection("session-seats");
-        await this._connection.db.createCollection("session-seats", {
+        try {
+            await this._connection.db.dropCollection("populated-session-seats");
+        } catch (error) {
+            Logger.info("Populated-session-seats collection did not exist, continuing");
+        }
+        await this._connection.db.createCollection("populated-session-seats", {
             viewOn: "session-seats",
             pipeline: [
                 {
