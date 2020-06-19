@@ -149,6 +149,7 @@ export async function createTheatres(): Promise<void> {
                 seat.id = uuid.v4();
                 seat.row = character;
                 seat.seatNumber = i + 1;
+                seat.theatre = theatreDocument;
                 waitingPromises.push(new SeatModel(seat).save());
             }
         }

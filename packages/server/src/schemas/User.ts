@@ -6,6 +6,20 @@ export enum Role {
     customer = "customer",
 }
 
+export interface UserBase {
+    id: string;
+
+    firstName: string;
+
+    lastName: string;
+
+    email: string;
+
+    createdAt: Date;
+
+    role: Role;
+}
+
 registerEnumType(Role, { name: "Role", description: "The role of the user" });
 
 @ObjectType()

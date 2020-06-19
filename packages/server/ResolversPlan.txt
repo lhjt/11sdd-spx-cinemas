@@ -3,7 +3,7 @@ Resolvers
 Users
 --------
 @Query()
-getUserDetails(userId!: string) => User!
+getUserDetails(userId!: string) => User! -> ! Create View + Add Aggregation
 
 @Mutation()
 createUser(email!: string, password!: string) => token, refreshToken
@@ -21,6 +21,10 @@ Reservations
 --------------
 ...User => Reservations THUS no query
 
+@Mutation()
+createReservation(reservationDetails!) => Reservation!
+
+
 SessionSeats
 --------------
 ! Should link with
@@ -28,17 +32,17 @@ SessionSeats
 @Query()
 getSessionSeat(sessionSeatId!: string) => SessionSeat!
 
-@Query
+@Query()
 getSessionSeats(sessionId!: string) => [SessionSeats!]
 
 
 Movies
 --------
 @Query()
-getMovie(movieId!: string) => Movie!
+getMovie(movieId!: string) => Movie! ++
 
 @Query()
-getMovies() => [Movie!]
+getMovies() => [Movie!] ++
 
 Sessions
 --------

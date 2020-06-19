@@ -2,6 +2,7 @@ import { addModelToTypegoose, buildSchema, modelOptions, prop } from "@typegoose
 import { model as newMongooseModel } from "mongoose";
 import { Field, ID, ObjectType } from "type-graphql";
 import { Movie } from "../Movie";
+import { Seat } from "../Seat";
 import { BaseSessionSeat, SessionSeat } from "../SessionSeat";
 import { Theatre } from "../Theatre";
 
@@ -31,6 +32,10 @@ export class SessionsView {
     @Field(() => [SessionSeat])
     @prop()
     reservedSeats!: BaseSessionSeat[];
+
+    @Field(() => [Seat])
+    @prop()
+    allSeats!: Seat[];
 }
 
 export const SessionsViewModel = addModelToTypegoose(

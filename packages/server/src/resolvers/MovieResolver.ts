@@ -16,6 +16,6 @@ export class MovieResolver {
 
     @FieldResolver(() => [SessionsView])
     async sessions(@Root() movie: MovieBase): Promise<SessionsView[]> {
-        return await SessionsViewModel.find({ "movie.id": movie.id });
+        return await SessionsViewModel.find({ "movie.id": movie.id }).lean();
     }
 }

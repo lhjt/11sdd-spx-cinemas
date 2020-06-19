@@ -74,8 +74,8 @@ export class DatabaseController {
                 {
                     $lookup: {
                         from: "theatres",
-                        localField: "theatre",
                         foreignField: "_id",
+                        localField: "theatre",
                         as: "theatre",
                     },
                 },
@@ -91,6 +91,14 @@ export class DatabaseController {
                         localField: "_id",
                         foreignField: "session",
                         as: "reservedSeats",
+                    },
+                },
+                {
+                    $lookup: {
+                        from: "seats",
+                        localField: "theatre._id",
+                        foreignField: "theatre",
+                        as: "allSeats",
                     },
                 },
             ],

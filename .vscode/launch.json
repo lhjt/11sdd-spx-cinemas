@@ -5,17 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "cwd": "${workspaceFolder}/packages/server",
             "type": "pwa-node",
             "request": "launch",
             "name": "Launch Program",
             "skipFiles": [
                 "<node_internals>/**",
                 "${workspaceRoot}/node_modules/**/*.js",
-                "../../node_modules/**/*.js"
+                "${workspaceRoot}/packages/server/node_modules/**/*.js"
             ],
-            "program": "${workspaceFolder}\\src\\index.ts",
-            "preLaunchTask": "tsc: build - tsconfig.json",
-            "outFiles": ["${workspaceFolder}/build/**/*.js"]
+            "program": "${workspaceFolder}\\packages\\server\\src\\index.ts",
+            "preLaunchTask": "tsc: build - packages/server/tsconfig.json",
+            "outFiles": ["${workspaceFolder}/packages/server/build/**/*.js"]
         }
     ]
 }

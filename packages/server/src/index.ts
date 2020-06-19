@@ -6,6 +6,7 @@ import { DatabaseController } from "./classes/DatabaseController";
 import { MovieResolver } from "./resolvers/MovieResolver";
 import { ReservationResolver } from "./resolvers/ReservationResolver";
 import { SessionResolver } from "./resolvers/SessionResolver";
+import { UserResolver } from "./resolvers/UserResolver";
 import "./schemas/views/SessionsView";
 
 async function startServer(): Promise<void> {
@@ -16,7 +17,7 @@ async function startServer(): Promise<void> {
     // createUsers(200);
 
     const schema = await buildSchema({
-        resolvers: [MovieResolver, SessionResolver, ReservationResolver],
+        resolvers: [MovieResolver, SessionResolver, ReservationResolver, UserResolver],
     });
 
     const app = express();
