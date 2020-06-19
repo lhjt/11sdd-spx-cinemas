@@ -1,0 +1,52 @@
+Resolvers
+
+Users
+--------
+@Query()
+getUserDetails(userId!: string) => User!
+
+@Mutation()
+createUser(email!: string, password!: string) => token, refreshToken
+
+ROUTE /accounts
+
+- POST /login : { username, password } => token, refreshToken
+
+- POST /refresh : { token } => token, refreshToken
+
+- POST /delete : { REQUIRES Authorization AS header AND refreshToken }
+
+
+Reservations
+--------------
+...User => Reservations THUS no query
+
+SessionSeats
+--------------
+! Should link with
+
+@Query()
+getSessionSeat(sessionSeatId!: string) => SessionSeat!
+
+@Query
+getSessionSeats(sessionId!: string) => [SessionSeats!]
+
+
+Movies
+--------
+@Query()
+getMovie(movieId!: string) => Movie!
+
+@Query()
+getMovies() => [Movie!]
+
+Sessions
+--------
+Session: { ...SessionInfo, theatre, movie }
+
+@Query()
+getSessions() => [Session!]
+
+@Query()
+getSession(sessionId!: string) => Session!
+> Session: { ...SessionInfo, theatre => seats, movie }

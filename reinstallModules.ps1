@@ -5,4 +5,4 @@ Write-Output("Client node_modules cleared")
 Remove-Item .\packages\server\node_modules -Force -Recurse
 Write-Output("Server node_modules cleared")
 
-yarn install
+yarn workspace server add uuid
