@@ -1,8 +1,8 @@
 import bcyrpt from "bcrypt";
 import bodyParser from "body-parser";
 import { Router } from "express";
-import { UserModel } from "../schemas/User";
 import jwt from "jsonwebtoken";
+import { UserModel } from "../schemas/User";
 
 export const accountsRouter = Router();
 
@@ -17,9 +17,18 @@ accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
 
     const user = await UserModel.findOne({ email });
     if (!user) return res.sendStatus(404);
+
     const correctPassword = await bcyrpt.compare(password, user.password);
     if (!correctPassword) return res.sendStatus(404);
 
+    const token = jwt.sign(
+        { uid: user.id },
+        process.env.CINEMA_BACKEND_SIGNING_KEY ?? "super-secret-test-key",
+        { expiresIn: "15m" }
+    );
+
+    console.log(jwt.decode(token));
+
     // TODO: Integrate JWT and refresh tokens
-    return res.sendStatus(200);
+    return res.send(token);
 });
