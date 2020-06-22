@@ -6,7 +6,7 @@ import { Movie, MovieModel } from "../../schemas/Movie";
 import { Reservation, ReservationModel } from "../../schemas/Reservation";
 import { Seat, SeatModel } from "../../schemas/Seat";
 import { Session, SessionModel } from "../../schemas/Session";
-import { SeatSessionModel, SessionSeat } from "../../schemas/SessionSeat";
+import { SessionSeat, SessionSeatModel } from "../../schemas/SessionSeat";
 import { Theatre, TheatreModel } from "../../schemas/Theatre";
 import { Role, User, UserModel } from "../../schemas/User";
 import { Logger } from "../Logger";
@@ -67,20 +67,15 @@ export async function createUsers(quantity: number): Promise<void> {
             sessionSeat.seat = seat._id;
             const session = (
                 await SessionModel.aggregate([{ $match: {} }, { $sample: { size: 1 } }])
-            )[0];
+            )[0] as Session;
             sessionSeat.session = session;
-            // console.log(sessionSeat.session);
-            const sessionSeatDocument = new SeatSessionModel(sessionSeat);
-            // promises.push(sessionSeatDocument.save());
+            sessionSeat.sessionId = session.id;
+            const sessionSeatDocument = new SessionSeatModel(sessionSeat);
 
-            // await sessionSeatDocument.save();
-
-            // console.log("Saved Session Seat");
-            // console.log("DB Check:", newDoc?.id);
             seats.push(sessionSeatDocument);
         }
 
-        SeatSessionModel.insertMany(seats);
+        SessionSeatModel.insertMany(seats);
 
         reservationDocument.seats = [...seats];
         // promises.push(reservationDocument.save());

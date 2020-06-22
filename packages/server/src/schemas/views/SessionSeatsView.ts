@@ -1,31 +1,33 @@
-import { buildSchema, modelOptions, prop, Ref } from "@typegoose/typegoose";
-import { Session } from "inspector";
-import { Document, model as newMongooseModel } from "mongoose";
-import { Reservation } from "../Reservation";
-import { Seat } from "../Seat";
-import { SessionsView } from "./SessionsView";
+import { Field, ID, Int, ObjectType } from "type-graphql";
 
-@modelOptions({ schemaOptions: { collection: "populated-session-seats", id: false } })
-export class SessionSeatsView {
-    @prop({ index: true, unique: true })
+@ObjectType()
+class SessionsSeatTheatre {
+    @Field(() => ID)
     id!: string;
 
-    @prop({ ref: Session, index: true })
-    session!: Ref<Session>;
+    @Field()
+    name!: string;
+}
+@ObjectType()
+class SessionSeatsSeat {
+    @Field(() => ID)
+    id!: string;
 
-    @prop({ index: true })
-    seat!: Seat;
+    @Field(() => SessionsSeatTheatre)
+    theatre!: SessionsSeatTheatre;
 
-    @prop({ index: true })
-    reserved!: boolean;
+    @Field()
+    row!: string;
 
-    @prop({ index: true })
-    reservation!: Reservation;
+    @Field(() => Int)
+    seatNumber!: number;
 }
 
-export const SessionsViewModel = newMongooseModel<typeof SessionsView & Document>(
-    "populated-session-seats",
-    buildSchema(SessionSeatsView),
-    "populated-session-seats",
-    true
-);
+@ObjectType()
+export class SessionSeatsView {
+    @Field()
+    id!: string;
+
+    @Field(() => SessionSeatsSeat)
+    seat!: SessionSeatsSeat;
+}

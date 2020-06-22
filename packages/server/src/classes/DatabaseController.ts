@@ -17,7 +17,7 @@ export class DatabaseController {
             useCreateIndex: true,
         });
         this._connection = conn.connection;
-        if (process.env.NODE_ENV !== "production") mongoose.set("debug", true);
+        // if (process.env.NODE_ENV !== "production") mongoose.set("debug", true);
 
         await this.createViews();
         Logger.success("Successfully initialised and connected to the database");

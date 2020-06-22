@@ -28,6 +28,10 @@ export class SessionSeat {
     @prop({ ref: Session, index: true })
     session!: Ref<Session>;
 
+    @Field()
+    @prop({ index: true })
+    sessionId!: string;
+
     @Field(() => Seat)
     @prop({ ref: Seat, index: true })
     seat!: Ref<Seat>;
@@ -41,4 +45,4 @@ export class SessionSeat {
     reservation!: Ref<Reservation>;
 }
 
-export const SeatSessionModel = getModelForClass(SessionSeat);
+export const SessionSeatModel = getModelForClass(SessionSeat);
