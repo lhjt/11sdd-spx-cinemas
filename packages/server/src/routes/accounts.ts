@@ -2,6 +2,7 @@ import bcyrpt from "bcrypt";
 import bodyParser from "body-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
+import { RefreshTokenController as RTC } from "../classes/RefreshToken";
 import { UserModel } from "../schemas/User";
 
 export const accountsRouter = Router();
@@ -29,6 +30,5 @@ accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
 
     console.log(jwt.decode(token));
 
-    // TODO: Integrate JWT and refresh tokens
-    return res.send(token);
+    return res.cookie("_r", RTC.instance.createToken(user.id)).send(token);
 });
