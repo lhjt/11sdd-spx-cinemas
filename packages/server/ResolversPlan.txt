@@ -3,10 +3,10 @@ Resolvers
 Users
 --------
 @Query()
-getUserDetails(userId!: string) => User! -> ! Create View + Add Aggregation
+getUserDetails(userId!: string) => User! -> ! Create View + Add Aggregation ✅
 
 @Mutation()
-createUser(email!: string, password!: string) => token, refreshToken
+createUser(email!: string, password!: string) => token, refreshToken ✅
 
 ROUTE /accounts
 
@@ -20,7 +20,7 @@ ROUTE /accounts
 Reservations
 --------------
 @Query()
-getReservations(userId!: string) => [Reservation!]!
+getReservations(userId!: string) => [Reservation!]! ✅
 
 @Mutation()
 createReservation(reservationDetails!) => Reservation!
@@ -40,10 +40,10 @@ getSessionSeats(sessionId!: string) => [SessionSeats!]
 Movies
 --------
 @Query()
-getMovie(movieId!: string) => Movie! ++
+getMovie(movieId!: string) => Movie! ✅
 
 @Query()
-getMovies() => [Movie!] ++
+getMovies() => [Movie!] ✅
 
 Sessions
 --------

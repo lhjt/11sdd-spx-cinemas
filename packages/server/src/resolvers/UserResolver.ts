@@ -1,7 +1,33 @@
-import { Arg, FieldResolver, Query, Resolver, Root } from "type-graphql";
-import { User, UserBase, UserModel } from "../schemas/User";
+import bcrypt from "bcrypt";
+import {
+    Arg,
+    Field,
+    FieldResolver,
+    InputType,
+    Mutation,
+    Query,
+    Resolver,
+    Root,
+} from "type-graphql";
+import { v4 as uuid4 } from "uuid";
+import { Role, User, UserBase, UserModel } from "../schemas/User";
 import { ReservationView } from "../schemas/views/ReservationView";
 import { ReservationResolver } from "./ReservationResolver";
+
+@InputType()
+class CreateUserArgs {
+    @Field()
+    firstName!: string;
+
+    @Field()
+    lastName!: string;
+
+    @Field()
+    email!: string;
+
+    @Field()
+    password!: string;
+}
 
 @Resolver(User)
 export class UserResolver {
@@ -12,8 +38,31 @@ export class UserResolver {
 
     @FieldResolver(() => [ReservationView])
     async reservations(@Root() user: UserBase): Promise<ReservationView[]> {
-        // TODO: Create View for this Query, so that information regarding each reservation
-        // TODO: can easily be accessed without needing another query
         return await ReservationResolver.aggregateReservationView(user.id);
+    }
+
+    @Mutation(() => User)
+    async createUser(
+        @Arg("userDetails") { email, firstName, lastName, password }: CreateUserArgs
+    ): Promise<User> {
+        const user = new User();
+        user.id = uuid4();
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
+        user.createdAt = new Date();
+        user.role = Role.customer;
+        user.password = await bcrypt.hash(password, 3);
+
+        console.log(user);
+
+        try {
+            const userDoc = new UserModel(user);
+            console.log(userDoc);
+            await userDoc.save();
+            return userDoc;
+        } catch (error) {
+            return error;
+        }
     }
 }

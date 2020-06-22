@@ -41,6 +41,7 @@ export class User {
     @prop({
         match: /.+\@.+\..+/,
         trim: true,
+        index: true,
     })
     email!: string;
 

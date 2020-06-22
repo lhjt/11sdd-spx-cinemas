@@ -12,7 +12,9 @@
             "**/graphql",
             "**/graphql/**",
             "**/uuid",
-            "**/uuid/**"
+            "**/uuid/**",
+            "**/class-validator",
+            "**/class-validator/**"
         ]
     }
 }

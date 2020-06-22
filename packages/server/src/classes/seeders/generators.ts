@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import faker from "faker";
 import { Document } from "mongoose";
 import uuid from "uuid";
@@ -28,7 +29,7 @@ export async function createUsers(quantity: number): Promise<void> {
         user.createdAt = new Date();
         user.email = faker.internet.email(user.firstName, user.lastName);
         user.role = Role.customer;
-        user.password = faker.random.alphaNumeric(12);
+        user.password = await bcrypt.hash(faker.random.alphaNumeric(12), 5);
         const userDocument = new UserModel(user);
         // promises.push(userDocument.save());
 

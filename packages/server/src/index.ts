@@ -12,9 +12,9 @@ import "./schemas/views/SessionsView";
 async function startServer(): Promise<void> {
     await DatabaseController.initialise("mongodb://localhost:27017/spx-cinemas");
     // await createTheatres();
-    // await createMovies(10);
-    // await createSessions(50);
-    // createUsers(200);
+    // await createMovies(20);
+    // await createSessions(500);
+    // createUsers(2000);
 
     const schema = await buildSchema({
         resolvers: [MovieResolver, SessionResolver, ReservationResolver, UserResolver],
