@@ -19,7 +19,8 @@ ROUTE /accounts
 
 Reservations
 --------------
-...User => Reservations THUS no query
+@Query()
+getReservations(userId!: string) => [Reservation!]!
 
 @Mutation()
 createReservation(reservationDetails!) => Reservation!
@@ -54,3 +55,10 @@ getSessions() => [Session!]
 @Query()
 getSession(sessionId!: string) => Session!
 > Session: { ...SessionInfo, theatre => seats, movie }
+
+
+CDN
+-----
+ROUTE /cdn
+
+- /:fileHash

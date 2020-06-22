@@ -25,7 +25,7 @@ async function startServer(): Promise<void> {
 
     apolloServer.applyMiddleware({ app, path: "/graph" });
 
-    app.listen(3001, () => console.log("Listening at http://localhost:3001"));
+    app.listen(3001, () => console.log("Listening at http://localhost:3001/graph"));
 }
 
 startServer();
