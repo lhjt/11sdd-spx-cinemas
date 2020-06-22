@@ -4,9 +4,12 @@ import { ReservationView } from "../schemas/views/ReservationView";
 
 @Resolver(ReservationView)
 export class ReservationResolver {
-    private async aggregate(uid: string, rid?: string): Promise<ReservationView[]> {
-        const matchObj: { uid: string; rid?: string } = { uid };
-        if (rid) matchObj.rid = rid;
+    public static async aggregateReservationView(
+        uid: string,
+        rid?: string
+    ): Promise<ReservationView[]> {
+        const matchObj: { userId: string; id?: string } = { userId: uid };
+        if (rid) matchObj.id = rid;
 
         return await ReservationModel.aggregate([
             {
@@ -89,7 +92,7 @@ export class ReservationResolver {
 
     @Query(() => [ReservationView])
     async getReservations(@Arg("userId") uid: string): Promise<ReservationView[]> {
-        const reservations = await this.aggregate(uid);
+        const reservations = await ReservationResolver.aggregateReservationView(uid);
 
         console.log(reservations);
         return reservations;
@@ -100,7 +103,7 @@ export class ReservationResolver {
         @Arg("userId") uid: string,
         @Arg("reservationId") rid: string
     ): Promise<ReservationView | null> {
-        const reservation = await this.aggregate(uid, rid);
+        const reservation = await ReservationResolver.aggregateReservationView(uid, rid);
         if (reservation.length === 1) return reservation[0];
         return null;
     }

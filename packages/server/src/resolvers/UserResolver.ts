@@ -1,6 +1,7 @@
 import { Arg, FieldResolver, Query, Resolver, Root } from "type-graphql";
-import { Reservation, ReservationModel } from "../schemas/Reservation";
 import { User, UserBase, UserModel } from "../schemas/User";
+import { ReservationView } from "../schemas/views/ReservationView";
+import { ReservationResolver } from "./ReservationResolver";
 
 @Resolver(User)
 export class UserResolver {
@@ -9,10 +10,10 @@ export class UserResolver {
         return await UserModel.findOne({ id: userId });
     }
 
-    @FieldResolver(() => [Reservation])
-    async reservations(@Root() user: UserBase): Promise<Reservation[]> {
+    @FieldResolver(() => [ReservationView])
+    async reservations(@Root() user: UserBase): Promise<ReservationView[]> {
         // TODO: Create View for this Query, so that information regarding each reservation
         // TODO: can easily be accessed without needing another query
-        return await ReservationModel.find({ userId: user.id }).populate("seats").lean();
+        return await ReservationResolver.aggregateReservationView(user.id);
     }
 }
