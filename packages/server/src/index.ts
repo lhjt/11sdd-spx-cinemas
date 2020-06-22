@@ -7,6 +7,7 @@ import { MovieResolver } from "./resolvers/MovieResolver";
 import { ReservationResolver } from "./resolvers/ReservationResolver";
 import { SessionResolver } from "./resolvers/SessionResolver";
 import { UserResolver } from "./resolvers/UserResolver";
+import { accountsRouter } from "./routes/accounts";
 import "./schemas/views/SessionsView";
 
 async function startServer(): Promise<void> {
@@ -21,7 +22,8 @@ async function startServer(): Promise<void> {
     });
 
     const app = express();
-    const apolloServer = new ApolloServer({ schema });
+    app.use("/accounts", accountsRouter);
+    const apolloServer = new ApolloServer({ schema, tracing: true });
 
     apolloServer.applyMiddleware({ app, path: "/graph" });
 
