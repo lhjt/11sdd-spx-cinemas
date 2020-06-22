@@ -10,9 +10,9 @@ createUser(email!: string, password!: string) => token, refreshToken ✅
 
 ROUTE /accounts
 
-- POST /login : { username, password } => token, refreshToken
+- POST /login : { username, password } => token, refreshToken ✅
 
-- POST /refresh : { token } => token, refreshToken
+- POST /refresh : { token } => token, refreshToken ✅
 
 - POST /delete : { REQUIRES Authorization AS header AND refreshToken }
 
