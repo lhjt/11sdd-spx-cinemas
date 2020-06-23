@@ -61,4 +61,61 @@ export class SessionSeatsResolver {
 
         return documents;
     }
+    async getSessionSeat(@Arg("sessionSeatId") sid: string): Promise<SessionSeatsView | null> {
+        const documents = (await SessionSeatModel.aggregate([
+            {
+                $match: {
+                    id: sid,
+                },
+            },
+            {
+                $lookup: {
+                    from: "seats",
+                    let: {
+                        seatId: "$seat",
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $eq: ["$_id", "$$seatId"],
+                                },
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "theatres",
+                                localField: "theatre",
+                                foreignField: "_id",
+                                as: "theatre",
+                            },
+                        },
+                        {
+                            $unwind: "$theatre",
+                        },
+                    ],
+                    as: "seat",
+                },
+            },
+            {
+                $unwind: {
+                    path: "$seat",
+                    preserveNullAndEmptyArrays: true,
+                },
+            },
+            {
+                $project: {
+                    _id: false,
+                    reservation: false,
+                    reserved: false,
+                    session: false,
+                    "seat._id": false,
+                    "seat.theatre._id": false,
+                },
+            },
+        ])) as SessionSeatsView[];
+
+        if (documents.length === 1) return documents[0];
+        return null;
+    }
 }

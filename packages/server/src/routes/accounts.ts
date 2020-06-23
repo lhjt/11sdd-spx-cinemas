@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import { DateTime } from "luxon";
-import { TokenController as RTC } from "../classes/RefreshToken";
+import { TokenController as TC } from "../classes/TokenController";
 import { UserModel } from "../schemas/User";
 
 export const accountsRouter = Router();
@@ -24,12 +24,12 @@ accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
     const correctPassword = await bcyrpt.compare(password, user.password);
     if (!correctPassword) return res.sendStatus(404);
 
-    const token = RTC.instance.createJWT(user.id);
+    const token = TC.instance.createJWT(user.id);
 
     console.log(jwt.decode(token));
 
     return res
-        .cookie("_r", RTC.instance.createRefreshToken(user.id), {
+        .cookie("_r", TC.instance.createRefreshToken(user.id), {
             httpOnly: true,
             sameSite: true,
             expires: DateTime.local().plus({ days: 2 }).toJSDate(),
@@ -39,10 +39,10 @@ accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
 
 accountsRouter.post("/refresh", cookieParser(), (req, res) => {
     if (!req.cookies._r) return res.sendStatus(400);
-    const uid = RTC.instance.checkRefreshToken(req.cookies._r);
+    const uid = TC.instance.checkRefreshToken(req.cookies._r);
     if (!uid) return res.sendStatus(401);
-    const token = RTC.instance.createJWT(uid);
-    res.cookie("_r", RTC.instance.createRefreshToken(uid), {
+    const token = TC.instance.createJWT(uid);
+    res.cookie("_r", TC.instance.createRefreshToken(uid), {
         httpOnly: true,
         sameSite: true,
         expires: DateTime.local().plus({ days: 2 }).toJSDate(),

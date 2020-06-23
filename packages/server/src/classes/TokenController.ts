@@ -32,7 +32,7 @@ export class TokenController {
      * @param uid User id
      */
     public createRefreshToken(uid: string): string {
-        const token = crypto.randomBytes(64).toString("hex");
+        const token = crypto.randomBytes(32).toString("hex");
         const expiryTime = DateTime.local().plus({ days: 2 }).toJSDate();
         this.tokenList.set(token, { exp: expiryTime, uid });
         console.log("Current tokens:", this.tokenList);

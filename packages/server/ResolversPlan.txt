@@ -31,10 +31,10 @@ SessionSeats
 ! Should link with
 
 @Query()
-getSessionSeat(sessionSeatId!: string) => SessionSeat!
+getSessionSeat(sessionSeatId!: string) => SessionSeat ✅
 
 @Query()
-getSessionSeats(sessionId!: string) => [SessionSeats!]
+getSessionSeats(sessionId!: string) => [SessionSeats!] ✅
 
 
 Movies
