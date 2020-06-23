@@ -13,6 +13,8 @@ export class SessionResolver {
         }
     }
 
+    // @Query(() => [SessionsView])
+
     @Query(() => SessionsView, { nullable: true })
     async getSession(@Arg("id") id: string): Promise<SessionsView | null> {
         return await SessionsViewModel.findOne({ id }).lean();

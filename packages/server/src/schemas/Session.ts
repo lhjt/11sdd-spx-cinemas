@@ -26,6 +26,10 @@ export class Session {
     @prop({ ref: Movie, index: true })
     movie!: Ref<Movie>;
 
+    @Field()
+    @prop({ index: true })
+    movieId!: string;
+
     @Field(() => Theatre)
     @prop({ ref: Theatre, index: true })
     theatre!: Ref<Theatre>;

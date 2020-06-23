@@ -1,3 +1,4 @@
+import { DocumentType } from "@typegoose/typegoose";
 import bcrypt from "bcrypt";
 import faker from "faker";
 import { Document } from "mongoose";
@@ -102,7 +103,13 @@ export async function createSessions(quantity: number): Promise<void> {
         session.id = uuid.v4();
         session.startTime = faker.date.recent();
         session.endTime = new Date(session.startTime.getMilliseconds() + milliseconds);
-        session.movie = (await MovieModel.aggregate([{ $match: {} }, { $sample: { size: 1 } }]))[0];
+        const movieDocuments: DocumentType<Movie>[] = await MovieModel.aggregate([
+            { $match: {} },
+            { $sample: { size: 1 } },
+        ]);
+        session.movie = movieDocuments[0];
+        session.movieId = movieDocuments[0]._id;
+
         session.theatre = (
             await TheatreModel.aggregate([{ $match: {} }, { $sample: { size: 1 } }])
         )[0];
