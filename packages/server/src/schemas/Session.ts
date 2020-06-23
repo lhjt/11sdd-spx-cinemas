@@ -7,6 +7,7 @@ export interface SessionBase {
     id: string;
 
     movie: Movie;
+    movieId: string;
 
     theatre: Theatre;
 

@@ -1,6 +1,7 @@
 import { DocumentType } from "@typegoose/typegoose";
 import bcrypt from "bcrypt";
 import faker from "faker";
+import { DateTime } from "luxon";
 import { Document } from "mongoose";
 import uuid from "uuid";
 import { Movie, MovieModel } from "../../schemas/Movie";
@@ -13,7 +14,6 @@ import { Role, User, UserModel } from "../../schemas/User";
 import { Logger } from "../Logger";
 
 export async function createUsers(quantity: number): Promise<void> {
-    const promises: Promise<unknown>[] = [];
     const array: number[] = [];
     for (let index = 0; index < quantity; index++) {
         array.push(index);
@@ -32,7 +32,6 @@ export async function createUsers(quantity: number): Promise<void> {
         user.role = Role.customer;
         user.password = await bcrypt.hash(faker.random.alphaNumeric(12), 5);
         const userDocument = new UserModel(user);
-        // promises.push(userDocument.save());
 
         // await userDocument.save();
         userDocuments.push(userDocument);
@@ -97,18 +96,19 @@ export async function createUsers(quantity: number): Promise<void> {
 
 export async function createSessions(quantity: number): Promise<void> {
     const promises: Promise<unknown>[] = [];
-    const milliseconds = 1000 * 60 * 100;
     for (let i = 0; i < quantity; i++) {
         const session = new Session();
         session.id = uuid.v4();
         session.startTime = faker.date.recent();
-        session.endTime = new Date(session.startTime.getMilliseconds() + milliseconds);
         const movieDocuments: DocumentType<Movie>[] = await MovieModel.aggregate([
             { $match: {} },
             { $sample: { size: 1 } },
         ]);
         session.movie = movieDocuments[0];
-        session.movieId = movieDocuments[0]._id;
+        session.movieId = movieDocuments[0].id;
+        session.endTime = DateTime.fromJSDate(session.startTime)
+            .plus({ minutes: session.movie.duration + 15 })
+            .toJSDate();
 
         session.theatre = (
             await TheatreModel.aggregate([{ $match: {} }, { $sample: { size: 1 } }])
