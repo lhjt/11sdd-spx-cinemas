@@ -50,10 +50,10 @@ Sessions
 Session: { ...SessionInfo, theatre, movie }
 
 @Query()
-getSessions() => [Session!]
+getSessions() => [Session!] ✅
 
 @Query()
-getSession(sessionId!: string) => Session!
+getSession(sessionId!: string) => Session! ✅
 > Session: { ...SessionInfo, theatre => seats, movie }
 
 
