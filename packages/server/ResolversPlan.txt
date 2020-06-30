@@ -23,7 +23,7 @@ Reservations
 getReservations(userId!: string) => [Reservation!]! ✅
 
 @Mutation()
-createReservation(reservationDetails!) => Reservation!
+createReservation(reservationDetails!) => Reservation! ✅
 
 
 SessionSeats
