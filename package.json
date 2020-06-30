@@ -1,5 +1,8 @@
 {
     "private": true,
+    "scripts": {
+        "dev": "concurrently \"yarn workspace server dev\" \"yarn workspace client start\""
+    },
     "workspaces": {
         "packages": [
             "packages/*"
@@ -16,5 +19,8 @@
             "**/class-validator",
             "**/class-validator/**"
         ]
+    },
+    "dependencies": {
+        "concurrently": "^5.2.0"
     }
 }
