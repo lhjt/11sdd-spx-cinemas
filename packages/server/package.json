@@ -32,7 +32,7 @@
         "type-graphql": "^1.0.0-rc.2",
         "typegoose": "^5.9.1",
         "typescript": "^3.8.3",
-        "uuid": "^8.1.0"
+        "uuid": "^8.2.0"
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
