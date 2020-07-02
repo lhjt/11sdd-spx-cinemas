@@ -1,4 +1,5 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import { createStyles, makeStyles, Paper, Theme, Typography } from "@material-ui/core";
+import { CloudOffRounded } from "@material-ui/icons";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useQuery } from "urql";
@@ -13,6 +14,19 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             justifyContent: "center",
             flexWrap: "wrap",
+        },
+        errorPaper: {
+            width: 500,
+            height: 300,
+            padding: theme.spacing(2),
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+            marginTop: theme.spacing(4),
+        },
+        cloud: {
+            fontSize: "6rem",
         },
     })
 );
@@ -36,7 +50,7 @@ const MoviePage: React.SFC<MoviePageProps> = () => {
         query: getMoviesQuery,
     });
 
-    const { data, fetching } = result;
+    const { data, fetching, error } = result;
     const movieData: {
         getMovies: { name: string; genre: string[]; plot: string; poster: string; id: string }[];
     } = data;
@@ -46,6 +60,15 @@ const MoviePage: React.SFC<MoviePageProps> = () => {
             <LoadingMovieCard />
             <LoadingMovieCard />
             <LoadingMovieCard />
+        </>
+    ) : error ? (
+        <>
+            <Paper className={classes.errorPaper} variant="outlined">
+                <CloudOffRounded className={classes.cloud} color="disabled" />
+                <Typography variant="h4" align="center" color="textSecondary">
+                    The server is currently unavailable
+                </Typography>
+            </Paper>
         </>
     ) : (
         <>
