@@ -285,4 +285,30 @@ export const movies: Movie[] = [
             "https://m.media-amazon.com/images/M/MV5BMTYxNDMyOTAxN15BMl5BanBnXkFtZTgwMDg1ODYzNTM@._V1_SX300.jpg",
         rating: 3.7,
     },
+    {
+        classification: Classification.R,
+        director: "Sam Taylor-Johnson",
+        duration: 125,
+        genre: ["drama", "romance", "thriller"],
+        id: uuid.v4(),
+        name: "Fifty Shades of Grey",
+        plot:
+            "Literature student Anastasia Steele's life changes forever when she meets handsome, yet tormented, billionaire Christian Grey.",
+        poster:
+            "https://m.media-amazon.com/images/M/MV5BMjE1MTM4NDAzOF5BMl5BanBnXkFtZTgwNTMwNjI0MzE@._V1_SX300.jpg",
+        rating: 2.3000000000000003,
+    },
+    {
+        classification: Classification.R,
+        director: "Francis Ford Coppola",
+        duration: 175,
+        genre: ["crime", "drama"],
+        id: uuid.v4(),
+        name: "The Godfather",
+        plot:
+            "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.",
+        poster:
+            "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
+        rating: 4.75,
+    },
 ];
