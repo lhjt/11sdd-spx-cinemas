@@ -1,5 +1,5 @@
 import { getModelForClass, index, modelOptions, prop } from "@typegoose/typegoose";
-import { Field, ID, Int, ObjectType, registerEnumType } from "type-graphql";
+import { Field, Float, ID, Int, ObjectType, registerEnumType } from "type-graphql";
 
 export interface MovieBase {
     id: string;
@@ -53,7 +53,7 @@ export class Movie implements MovieBase {
     @prop()
     duration!: number;
 
-    @Field(() => Int)
+    @Field(() => Float)
     @prop({ index: true })
     rating!: number;
 
