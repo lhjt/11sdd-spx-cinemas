@@ -23,7 +23,7 @@ export enum Classification {
     R = "R",
 }
 
-registerEnumType(Classification, { name: "Classficiation" });
+registerEnumType(Classification, { name: "Classification" });
 
 @ObjectType()
 @modelOptions({ schemaOptions: { collection: "movies", id: false } })
