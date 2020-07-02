@@ -32,7 +32,7 @@ const Homepage: React.SFC<HomepageProps> = () => {
     return (
         <>
             <Helmet>
-                <title>Welcome to SPX Cinemas</title>
+                <title>South Pacific Xtreme Cinemas</title>
                 <meta
                     name="description"
                     content="South Pacific Xtreme Cinemas - the superior viewing experience."
@@ -42,7 +42,7 @@ const Homepage: React.SFC<HomepageProps> = () => {
                 <div className={classes.hero}>
                     <Fade appear in>
                         <Typography align="center" variant="h1">
-                            Welcome to SPX Cinemas
+                            Welcome to South Pacific Xtreme Cinemas
                         </Typography>
                     </Fade>
                 </div>

@@ -14,6 +14,7 @@ import { AccountCircleRounded, ShoppingCartRounded } from "@material-ui/icons";
 import * as React from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import Homepage from "./components/homepage/Homepage";
+import MoviePage from "./components/movies/MoviePage";
 
 export interface AppProps {}
 
@@ -44,10 +45,7 @@ const App: React.SFC<AppProps> = () => {
         <>
             <AppBar position="sticky" color="secondary">
                 <Toolbar>
-                    <Button
-                        className={classes.titleButton}
-                        onClick={() => history.push("/")}
-                    >
+                    <Button className={classes.titleButton} onClick={() => history.push("/")}>
                         SPX Cinemas
                     </Button>
                     <Button
@@ -73,6 +71,7 @@ const App: React.SFC<AppProps> = () => {
                 </Toolbar>
             </AppBar>
             <Switch>
+                <Route path="/movies" render={(props) => <MoviePage {...props} />} />
                 <Route path="/" render={(props) => <Homepage {...props} />} />
             </Switch>
         </>
