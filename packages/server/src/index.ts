@@ -14,7 +14,7 @@ import "./schemas/views/SessionsView";
 async function startServer(): Promise<void> {
     await DatabaseController.initialise("mongodb://localhost:27017/spx-cinemas");
     // await createTheatres();
-    // await createMovies(20);
+    // await createMovies();
     // await createSessions(50);
     // createUsers(200);
 

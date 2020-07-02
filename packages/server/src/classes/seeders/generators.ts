@@ -4,6 +4,7 @@ import faker from "faker";
 import { DateTime } from "luxon";
 import { Document } from "mongoose";
 import uuid from "uuid";
+import { movies } from "../../data/movies";
 import { Movie, MovieModel } from "../../schemas/Movie";
 import { Reservation, ReservationModel } from "../../schemas/Reservation";
 import { Seat, SeatModel } from "../../schemas/Seat";
@@ -120,20 +121,24 @@ export async function createSessions(quantity: number): Promise<void> {
     console.log("Promise await complete");
 }
 
-export async function createMovies(quantity: number): Promise<void> {
-    const awaitingMovies = [];
-    for (let i = 0; i < quantity; i++) {
-        const m = new Movie();
-        m.director = faker.name.findName();
-        m.duration = 100;
-        m.genre = [...faker.random.words(3).toLowerCase().split(" ")];
-        m.id = uuid.v4();
-        m.name = faker.random.words(2).toLowerCase().split(" ").join("-");
-        m.rating = faker.random.number({ max: 5, min: 0, precision: 2 });
-        const mDoc = new MovieModel(m);
-        awaitingMovies.push(mDoc.save());
+export async function createMovies(): Promise<void> {
+    const awaitingMovies: DocumentType<Movie>[] = [];
+    for (const movieData of movies) {
+        const movie = new Movie();
+        movie.classification = movieData.classification;
+        movie.director = movieData.director;
+        movie.duration = movieData.duration;
+        movie.genre = movieData.genre;
+        movie.id = movieData.id;
+        movie.name = movieData.name;
+        movie.plot = movieData.plot;
+        movie.poster = movieData.poster;
+        movie.rating = movieData.rating;
+
+        const movieDocument = new MovieModel(movie);
+        awaitingMovies.push(movieDocument);
     }
-    await Promise.all(awaitingMovies);
+    await MovieModel.insertMany(awaitingMovies);
 }
 
 export async function createTheatres(): Promise<void> {
