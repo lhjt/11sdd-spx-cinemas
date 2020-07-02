@@ -10,8 +10,15 @@ import {
     Typography,
 } from "@material-ui/core";
 import * as React from "react";
+import { useHistory } from "react-router";
 
-export interface MovieCardProps {}
+export interface MovieCardProps {
+    name: string;
+    genre: string[];
+    plot: string;
+    poster: string;
+    id: string;
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -26,27 +33,26 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-const MovieCard: React.SFC<MovieCardProps> = (props) => {
+const MovieCard: React.SFC<MovieCardProps> = ({ genre, name, plot, poster, id }) => {
     const classes = useStyles();
+    const history = useHistory();
 
     return (
         <Card className={css(AnimationClassNames.slideUpIn20, classes.root)}>
-            <CardActionArea>
+            <CardActionArea onClick={() => history.push(`/movies/${id}`)}>
                 <CardHeader
-                    title="Fifty Shades of Grey (2015)"
-                    subheader="Drama, Romance, Thriller"
+                    title={name}
+                    subheader={genre.map((g) => g.charAt(0).toUpperCase() + g.slice(1)).join(", ")}
                 />
                 <img
-                    src="https://image.tmdb.org/t/p/w1280/flL1rBYK8GUxaKgare1C7Z3QIcS.jpg"
+                    draggable="false"
+                    src={poster}
                     style={{ width: "100%" }}
-                    alt="Movie Name Poster"
+                    alt={name + " Poster"}
                 />
                 {/* <Skeleton variant="rect" width={400} height={600} /> */}
                 <CardContent>
-                    <Typography variant="body1">
-                        Literature student Anastasia Steele's life changes forever when she meets
-                        handsome, yet tormented, billionaire Christian Grey.
-                    </Typography>
+                    <Typography variant="body1">{plot}</Typography>
                     {/* <Skeleton />
                     <Skeleton />
                     <Skeleton />

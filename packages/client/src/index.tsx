@@ -4,7 +4,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import "typeface-source-sans-pro";
+import { Provider } from "urql";
 import App from "./App";
+import { client } from "./contexts/urqlClient";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
 
@@ -20,14 +22,16 @@ const muiTheme = createMuiTheme({
 });
 
 ReactDOM.render(
-    <ThemeProvider theme={muiTheme}>
-        <BrowserRouter>
-            <React.StrictMode>
-                <CssBaseline />
-                <App />
-            </React.StrictMode>
-        </BrowserRouter>
-    </ThemeProvider>,
+    <Provider value={client}>
+        <ThemeProvider theme={muiTheme}>
+            <BrowserRouter>
+                <React.StrictMode>
+                    <CssBaseline />
+                    <App />
+                </React.StrictMode>
+            </BrowserRouter>
+        </ThemeProvider>
+    </Provider>,
     document.getElementById("root")
 );
 
