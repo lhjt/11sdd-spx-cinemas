@@ -82,7 +82,7 @@ const MoviePage: React.SFC<MoviePageProps> = () => {
     return (
         <>
             <Helmet>
-                <title>SPX Cinemas - Movies</title>
+                <title>Movies - SPX Cinemas</title>
                 <meta
                     name="description"
                     content="Movies that are currently airing at South Pacific Xtreme Cinemas."

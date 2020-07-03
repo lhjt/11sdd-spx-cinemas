@@ -22,5 +22,15 @@
     "Typed Field Dectorator": {
         "body": "@Field(() => ${1:Class})$0",
         "prefix": "tfd"
+    },
+    "useStyles Block": {
+        "body": [
+            "const useStyles = makeStyles((theme: Theme) =>",
+            "\tcreateStyles({",
+            "\t\t$0",
+            "\t})",
+            ");"
+        ],
+        "prefix": "usb"
     }
 }

@@ -14,6 +14,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 import { useQuery } from "urql";
+import SessionsOverviewCard from "./movie-card/SessionsOverviewCard";
 
 export interface IndividualMoviePageProps {}
 
@@ -28,15 +29,6 @@ query getMovie($movieId: String!) {
         duration
         plot
         poster
-        sessions {
-            id
-            theatre {
-                id
-                name
-            }
-            startTime
-            endTime
-        }
     }
 }
 `;
@@ -51,15 +43,6 @@ interface MovieData {
         name: string;
         plot: string;
         poster: string;
-        sessions: {
-            id: string;
-            theatre: {
-                id: string;
-                name: string;
-            };
-            startTime: Date;
-            endTime: Date;
-        }[];
     };
 }
 
@@ -81,6 +64,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         infoCard: {
             width: 400,
+            marginRight: theme.spacing(2),
         },
         trailerButton: {
             fontSize: theme.typography.body1.fontSize,
@@ -110,13 +94,13 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
         );
 
     const {
-        getMovie: { classification, director, duration, genre, id, name, plot, poster, sessions },
+        getMovie: { classification, director, duration, genre, id, name, plot, poster },
     } = data as MovieData;
 
     return (
         <>
             <Helmet>
-                <title>SPX Cinemas - {name}</title>
+                <title>{name} - SPX Cinemas</title>
             </Helmet>
             <div className={css(classes.container, AnimationClassNames.slideUpIn20)}>
                 <Card variant="outlined" className={classes.infoCard}>
@@ -147,6 +131,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
                         <Typography>{plot}</Typography>
                     </CardContent>
                 </Card>
+                <SessionsOverviewCard movieId={id} />
                 <div></div>
             </div>
         </>
