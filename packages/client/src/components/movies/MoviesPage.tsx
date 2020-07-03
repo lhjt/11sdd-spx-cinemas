@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: "flex",
             justifyContent: "center",
             flexWrap: "wrap",
+            margin: theme.spacing(4),
         },
         errorPaper: {
             width: 500,

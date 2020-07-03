@@ -14,7 +14,8 @@ import { AccountCircleRounded, ShoppingCartRounded } from "@material-ui/icons";
 import * as React from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import Homepage from "./components/homepage/Homepage";
-import MoviePage from "./components/movies/MoviePage";
+import IndividualMoviePage from "./components/movies/IndividualMoviePage";
+import MoviePage from "./components/movies/MoviesPage";
 
 export interface AppProps {}
 
@@ -71,6 +72,10 @@ const App: React.SFC<AppProps> = () => {
                 </Toolbar>
             </AppBar>
             <Switch>
+                <Route
+                    path="/movies/:movieId"
+                    render={(props) => <IndividualMoviePage {...props} />}
+                />
                 <Route path="/movies" render={(props) => <MoviePage {...props} />} />
                 <Route path="/" render={(props) => <Homepage {...props} />} />
             </Switch>

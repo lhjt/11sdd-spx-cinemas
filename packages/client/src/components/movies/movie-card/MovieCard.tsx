@@ -50,14 +50,8 @@ const MovieCard: React.SFC<MovieCardProps> = ({ genre, name, plot, poster, id })
                     style={{ width: "100%" }}
                     alt={name + " Poster"}
                 />
-                {/* <Skeleton variant="rect" width={400} height={600} /> */}
                 <CardContent>
                     <Typography variant="body1">{plot}</Typography>
-                    {/* <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton />
-                    <Skeleton /> */}
                 </CardContent>
             </CardActionArea>
         </Card>

@@ -19,6 +19,13 @@ const muiTheme = createMuiTheme({
     typography: {
         fontFamily: ["Source Sans Pro"].join(","),
     },
+    overrides: {
+        MuiButton: {
+            root: {
+                textTransform: "none",
+            },
+        },
+    },
 });
 
 ReactDOM.render(
