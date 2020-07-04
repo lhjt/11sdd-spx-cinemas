@@ -4,7 +4,6 @@ import {
     CardActionArea,
     CardContent,
     CardHeader,
-    CircularProgress,
     createStyles,
     makeStyles,
     Theme,
@@ -14,6 +13,7 @@ import { DateTime } from "luxon";
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "urql";
+import SkeletonSessionsOverviewCard from "./SkeletonSessionsOverviewCard";
 
 export interface SessionsOverviewCardProps {
     movieId: string;
@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         sessionPill: {
             width: 200,
-            margin: theme.spacing(1),
+            marginBottom: theme.spacing(1),
+            marginRight: theme.spacing(1),
         },
     })
 );
@@ -76,14 +77,7 @@ const SessionsOverviewCard: React.SFC<SessionsOverviewCardProps> = ({ movieId })
 
     const { fetching, stale, data } = results;
 
-    if (fetching || stale)
-        return (
-            <div className={classes.root}>
-                <Card variant="outlined" className={classes.loading}>
-                    <CircularProgress />
-                </Card>
-            </div>
-        );
+    if (fetching || stale) return <SkeletonSessionsOverviewCard />;
 
     const {
         getMovie: { name, sessions },
@@ -94,7 +88,7 @@ const SessionsOverviewCard: React.SFC<SessionsOverviewCardProps> = ({ movieId })
     return (
         <Card variant="outlined" className={classes.root}>
             <CardHeader title="Sessions" subheader={`Current available sessions for ${name}`} />
-            <CardContent>
+            <CardContent style={{ paddingTop: 0 }}>
                 {sessions.length > 0 &&
                     sessions.map((s) => (
                         <Card
@@ -121,7 +115,7 @@ const SessionsOverviewCard: React.SFC<SessionsOverviewCardProps> = ({ movieId })
                         </Card>
                     ))}
                 {sessions.length === 0 && (
-                    <Typography>
+                    <Typography className={AnimationClassNames.slideUpIn20}>
                         Unfortunately, there are no sessions available for {name} at this time.
                     </Typography>
                 )}

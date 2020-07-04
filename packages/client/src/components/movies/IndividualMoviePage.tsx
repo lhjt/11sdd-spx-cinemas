@@ -4,17 +4,18 @@ import {
     Card,
     CardContent,
     CardHeader,
-    CircularProgress,
     createStyles,
     makeStyles,
     Theme,
     Typography,
 } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 import { useQuery } from "urql";
 import SessionsOverviewCard from "./movie-card/SessionsOverviewCard";
+import SkeletonSessionsOverviewCard from "./movie-card/SkeletonSessionsOverviewCard";
 
 export interface IndividualMoviePageProps {}
 
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         infoCard: {
             width: 400,
+            minWidth: 400,
             marginRight: theme.spacing(2),
         },
         trailerButton: {
@@ -71,6 +73,15 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "100%",
             marginBottom: theme.spacing(2),
             marginTop: theme.spacing(2),
+        },
+        titleSkeleton: {
+            margin: theme.spacing(2),
+            borderRadius: 5,
+        },
+        skeletonButton: {
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(2),
+            borderRadius: 5,
         },
     })
 );
@@ -88,8 +99,36 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
 
     if (fetching)
         return (
-            <div className={css(classes.loading, AnimationClassNames.fadeIn500)}>
-                <CircularProgress size="8rem" />
+            <div className={css(AnimationClassNames.fadeIn500)}>
+                <div className={css(classes.container, AnimationClassNames.slideUpIn20)}>
+                    <Card variant="outlined" className={classes.infoCard}>
+                        <Skeleton className={classes.titleSkeleton} variant="rect" height={32} />
+                        <Skeleton variant="rect" width="100%" height={600} />
+                        <CardContent>
+                            <Typography color="textSecondary" variant="subtitle1">
+                                <Skeleton />
+                            </Typography>
+                            <Typography color="textSecondary" variant="subtitle1">
+                                <Skeleton />
+                            </Typography>
+                            <Typography color="textSecondary" variant="subtitle1">
+                                <Skeleton />
+                            </Typography>
+                            <Skeleton
+                                height={40}
+                                className={classes.skeletonButton}
+                                variant="rect"
+                            />
+                            <Typography>
+                                <Skeleton />
+                                <Skeleton />
+                                <Skeleton />
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                    <SkeletonSessionsOverviewCard />
+                    <div></div>
+                </div>
             </div>
         );
 
@@ -102,7 +141,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
             <Helmet>
                 <title>{name} - SPX Cinemas</title>
             </Helmet>
-            <div className={css(classes.container, AnimationClassNames.slideUpIn20)}>
+            <div className={css(classes.container)}>
                 <Card variant="outlined" className={classes.infoCard}>
                     <CardHeader
                         title={name}
