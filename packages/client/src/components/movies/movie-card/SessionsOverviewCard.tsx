@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         sessionPill: {
             width: 200,
-            marginBottom: theme.spacing(1),
-            marginRight: theme.spacing(1),
+            marginBottom: theme.spacing(2),
+            marginRight: theme.spacing(2),
         },
     })
 );
@@ -82,8 +82,6 @@ const SessionsOverviewCard: React.SFC<SessionsOverviewCardProps> = ({ movieId })
     const {
         getMovie: { name, sessions },
     } = data as SessionData;
-
-    console.log(sessions);
 
     return (
         <Card variant="outlined" className={classes.root}>

@@ -16,6 +16,7 @@ import { Route, Switch, useHistory } from "react-router-dom";
 import Homepage from "./components/homepage/Homepage";
 import IndividualMoviePage from "./components/movies/IndividualMoviePage";
 import MoviePage from "./components/movies/MoviesPage";
+import SessionPage from "./components/sessions/SessionPage";
 
 export interface AppProps {}
 
@@ -72,6 +73,7 @@ const App: React.SFC<AppProps> = () => {
                 </Toolbar>
             </AppBar>
             <Switch>
+                <Route path="/sessions/:sessionId" render={(props) => <SessionPage {...props} />} />
                 <Route
                     path="/movies/:movieId"
                     render={(props) => <IndividualMoviePage {...props} />}
