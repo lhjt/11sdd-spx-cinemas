@@ -14,17 +14,23 @@ import {
     Theme,
     Toolbar,
     Tooltip,
+    Typography,
     Zoom,
 } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import { AccountCircleRounded, ExitToAppRounded, ShoppingCartRounded } from "@material-ui/icons";
+import jwt from "jsonwebtoken";
+import queryString from "query-string";
 import * as React from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { apiURL } from ".";
+import LoginPage from "./components/authentication/login/LoginPage";
 import Homepage from "./components/homepage/Homepage";
 import IndividualMoviePage from "./components/movies/IndividualMoviePage";
 import MoviePage from "./components/movies/MoviesPage";
 import SessionPage from "./components/sessions/SessionPage";
 import { AuthenticationContext } from "./contexts/AuthenticationContext";
+import ProtectedRoute from "./contexts/ProtectedRoute";
 
 export interface AppProps {}
 
@@ -58,6 +64,43 @@ const App: React.SFC<AppProps> = () => {
 
     const classes = useStyles();
     const history = useHistory();
+    const location = useLocation();
+
+    React.useEffect(() => {
+        (async () => {
+            if (!userAccount) {
+                try {
+                    console.log("No userAccount data found, attempting to refresh...");
+                    const d = await fetch(apiURL("/accounts/refresh"), {
+                        method: "POST",
+                        credentials: "include",
+                    });
+
+                    if (d.status !== 200) throw new Error("Failed to refresh");
+
+                    const data = await d.text();
+
+                    console.log(data);
+
+                    const payload = jwt.decode(data) as { uid: string };
+
+                    console.log(payload);
+
+                    setUser(payload.uid, data);
+
+                    const continueURL = queryString.parse(location.search).continue as
+                        | string
+                        | undefined;
+
+                    if (continueURL) return history.replace(atob(continueURL));
+                } catch (error) {
+                    console.log("Not previously logged in correctly");
+                }
+            } else {
+                console.log("Logged in already");
+            }
+        })();
+    }, []);
 
     return (
         <>
@@ -81,7 +124,14 @@ const App: React.SFC<AppProps> = () => {
                             </Badge>
                         </Tooltip>
                     </IconButton>
-                    <IconButton color="inherit" onClick={() => setAccountDialogOpenState(true)}>
+                    <IconButton
+                        color="inherit"
+                        onClick={() =>
+                            userAccount
+                                ? setAccountDialogOpenState(true)
+                                : history.push(`/login?continue=${btoa(history.location.pathname)}`)
+                        }
+                    >
                         <Tooltip
                             TransitionComponent={Zoom}
                             title={userAccount ? "Logged In" : "Login"}
@@ -92,6 +142,11 @@ const App: React.SFC<AppProps> = () => {
                 </Toolbar>
             </AppBar>
             <Switch>
+                <Route path="/login" render={(props) => <LoginPage {...props} />} />
+                <ProtectedRoute
+                    path="/account"
+                    render={(props) => <Typography>You have reached the account page</Typography>}
+                />
                 <Route path="/sessions/:sessionId" render={(props) => <SessionPage {...props} />} />
                 <Route
                     path="/movies/:movieId"

@@ -1,4 +1,5 @@
 import { ApolloServer } from "apollo-server-express";
+import cors from "cors";
 import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
@@ -10,7 +11,6 @@ import { SessionSeatsResolver } from "./resolvers/SessionSeatResolver";
 import { UserResolver } from "./resolvers/UserResolver";
 import { accountsRouter } from "./routes/accounts";
 import "./schemas/views/SessionsView";
-
 async function startServer(): Promise<void> {
     await DatabaseController.initialise("mongodb://localhost:27017/spx-cinemas");
     // await createTheatres();
@@ -29,6 +29,9 @@ async function startServer(): Promise<void> {
     });
 
     const app = express();
+
+    app.use(cors({ origin: ["http://localhost:3000"], credentials: true }));
+
     app.use("/accounts", accountsRouter);
     const apolloServer = new ApolloServer({ schema, tracing: true });
 

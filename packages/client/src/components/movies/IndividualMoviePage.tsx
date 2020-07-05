@@ -141,7 +141,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
             <Helmet>
                 <title>{name} - SPX Cinemas</title>
             </Helmet>
-            <div className={css(classes.container)}>
+            <div className={css(classes.container, AnimationClassNames.slideUpIn20)}>
                 <Card variant="outlined" className={classes.infoCard}>
                     <CardHeader
                         title={name}

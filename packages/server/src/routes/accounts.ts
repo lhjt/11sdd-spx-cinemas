@@ -2,7 +2,6 @@ import bcyrpt from "bcrypt";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { Router } from "express";
-import jwt from "jsonwebtoken";
 import { DateTime } from "luxon";
 import { TokenController as TC } from "../classes/TokenController";
 import { UserModel } from "../schemas/User";
@@ -16,6 +15,7 @@ interface LoginObject {
 
 accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
     const { email, password } = req.body as LoginObject;
+    console.log("[/login] Received request, body:", req.body);
     if (!email || !password) return res.sendStatus(400);
 
     const user = await UserModel.findOne({ email });
@@ -25,9 +25,6 @@ accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
     if (!correctPassword) return res.sendStatus(404);
 
     const token = TC.instance.createJWT(user.id);
-
-    console.log(jwt.decode(token));
-
     return res
         .cookie("_r", TC.instance.createRefreshToken(user.id), {
             httpOnly: true,
@@ -37,10 +34,15 @@ accountsRouter.post("/login", bodyParser.json(), async (req, res) => {
         .send(token);
 });
 
+accountsRouter.post("/logout", cookieParser(), (_, res) => {
+    res.clearCookie("_r").sendStatus(200);
+});
+
 accountsRouter.post("/refresh", cookieParser(), (req, res) => {
+    console.log("[/refresh] Received request, cookies:", req.cookies);
     if (!req.cookies._r) return res.sendStatus(400);
     const uid = TC.instance.checkRefreshToken(req.cookies._r);
-    if (!uid) return res.sendStatus(401);
+    if (!uid) return res.clearCookie("_r").sendStatus(401);
     const token = TC.instance.createJWT(uid);
     res.cookie("_r", TC.instance.createRefreshToken(uid), {
         httpOnly: true,

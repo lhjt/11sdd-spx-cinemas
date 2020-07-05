@@ -11,6 +11,8 @@ import { client } from "./contexts/urqlClient";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
 
+export const apiURL = (path: string) => `http://localhost:3001${path}`;
+
 const muiTheme = createMuiTheme({
     palette: {
         primary: red,

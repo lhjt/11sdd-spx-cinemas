@@ -1,4 +1,5 @@
 import * as React from "react";
+import { apiURL } from "..";
 
 export interface AuthenticationContextProps {}
 
@@ -36,6 +37,7 @@ class AuthenticationContextProvider extends React.Component<
     };
 
     public clearUser = () => {
+        fetch(apiURL("/accounts/logout"), { method: "POST", credentials: "include" });
         this.setState({ userAccount: undefined });
     };
 

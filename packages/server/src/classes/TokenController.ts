@@ -27,6 +27,12 @@ export class TokenController {
         );
     }
 
+    private cleanRefreshTokenCache(): void {
+        this.tokenList.forEach((t, k, m) => {
+            if (t.exp < new Date()) m.delete(k);
+        });
+    }
+
     /**
      * Creates a refresh token attached to a uid
      * @param uid User id
@@ -36,6 +42,9 @@ export class TokenController {
         const expiryTime = DateTime.local().plus({ days: 2 }).toJSDate();
         this.tokenList.set(token, { exp: expiryTime, uid });
         console.log("Current tokens:", this.tokenList);
+
+        this.cleanRefreshTokenCache();
+
         return token;
     }
 
@@ -47,6 +56,9 @@ export class TokenController {
         const data = this.tokenList.get(token);
         if (!data) return false;
         if (data.exp < new Date()) return false;
+
+        this.cleanRefreshTokenCache();
+
         return data.uid;
     }
 }

@@ -1,4 +1,4 @@
-import { AnimationClassNames, css } from "@fluentui/react";
+import { css } from "@fluentui/react";
 import {
     Card,
     CardContent,
@@ -47,10 +47,7 @@ const SkeletonSessionsOverviewCard: React.SFC<SkeletonSessionsOverviewCardProps>
                 }
             />
             <CardContent>
-                <Card
-                    className={css(classes.sessionPill, AnimationClassNames.slideUpIn20)}
-                    variant="outlined"
-                >
+                <Card className={css(classes.sessionPill)} variant="outlined">
                     <CardContent>
                         <Typography>
                             <Skeleton />
@@ -60,10 +57,7 @@ const SkeletonSessionsOverviewCard: React.SFC<SkeletonSessionsOverviewCardProps>
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card
-                    className={css(classes.sessionPill, AnimationClassNames.slideUpIn20)}
-                    variant="outlined"
-                >
+                <Card className={css(classes.sessionPill)} variant="outlined">
                     <CardContent>
                         <Typography>
                             <Skeleton />
@@ -73,10 +67,7 @@ const SkeletonSessionsOverviewCard: React.SFC<SkeletonSessionsOverviewCardProps>
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card
-                    className={css(classes.sessionPill, AnimationClassNames.slideUpIn20)}
-                    variant="outlined"
-                >
+                <Card className={css(classes.sessionPill)} variant="outlined">
                     <CardContent>
                         <Typography>
                             <Skeleton />
@@ -86,10 +77,7 @@ const SkeletonSessionsOverviewCard: React.SFC<SkeletonSessionsOverviewCardProps>
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card
-                    className={css(classes.sessionPill, AnimationClassNames.slideUpIn20)}
-                    variant="outlined"
-                >
+                <Card className={css(classes.sessionPill)} variant="outlined">
                     <CardContent>
                         <Typography>
                             <Skeleton />
@@ -99,10 +87,7 @@ const SkeletonSessionsOverviewCard: React.SFC<SkeletonSessionsOverviewCardProps>
                         </Typography>
                     </CardContent>
                 </Card>
-                <Card
-                    className={css(classes.sessionPill, AnimationClassNames.slideUpIn20)}
-                    variant="outlined"
-                >
+                <Card className={css(classes.sessionPill)} variant="outlined">
                     <CardContent>
                         <Typography>
                             <Skeleton />
