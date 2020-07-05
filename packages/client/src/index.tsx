@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import "typeface-source-sans-pro";
 import { Provider } from "urql";
 import App from "./App";
+import AuthenticationContextProvider from "./contexts/AuthenticationContext";
 import { client } from "./contexts/urqlClient";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
@@ -31,12 +32,14 @@ const muiTheme = createMuiTheme({
 ReactDOM.render(
     <Provider value={client}>
         <ThemeProvider theme={muiTheme}>
-            <BrowserRouter>
-                <React.StrictMode>
-                    <CssBaseline />
-                    <App />
-                </React.StrictMode>
-            </BrowserRouter>
+            <AuthenticationContextProvider>
+                <BrowserRouter>
+                    <React.StrictMode>
+                        <CssBaseline />
+                        <App />
+                    </React.StrictMode>
+                </BrowserRouter>
+            </AuthenticationContextProvider>
         </ThemeProvider>
     </Provider>,
     document.getElementById("root")

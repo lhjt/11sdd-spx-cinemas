@@ -1,22 +1,30 @@
 import {
     AppBar,
+    Avatar,
     Badge,
     Button,
     createStyles,
+    Dialog,
     IconButton,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
     makeStyles,
     Theme,
     Toolbar,
     Tooltip,
     Zoom,
 } from "@material-ui/core";
-import { AccountCircleRounded, ShoppingCartRounded } from "@material-ui/icons";
+import { red } from "@material-ui/core/colors";
+import { AccountCircleRounded, ExitToAppRounded, ShoppingCartRounded } from "@material-ui/icons";
 import * as React from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import Homepage from "./components/homepage/Homepage";
 import IndividualMoviePage from "./components/movies/IndividualMoviePage";
 import MoviePage from "./components/movies/MoviesPage";
 import SessionPage from "./components/sessions/SessionPage";
+import { AuthenticationContext } from "./contexts/AuthenticationContext";
 
 export interface AppProps {}
 
@@ -36,10 +44,18 @@ const useStyles = makeStyles((theme: Theme) =>
             fontSize: theme.typography.h6.fontSize,
             textTransform: "none",
         },
+        avatarIcon: {
+            color: red[100],
+            backgroundColor: red[500],
+        },
     })
 );
 
 const App: React.SFC<AppProps> = () => {
+    const { clearUser, setUser, userAccount } = React.useContext(AuthenticationContext);
+
+    const [accountDialogIsOpen, setAccountDialogOpenState] = React.useState(false);
+
     const classes = useStyles();
     const history = useHistory();
 
@@ -65,8 +81,11 @@ const App: React.SFC<AppProps> = () => {
                             </Badge>
                         </Tooltip>
                     </IconButton>
-                    <IconButton color="inherit">
-                        <Tooltip TransitionComponent={Zoom} title="Account">
+                    <IconButton color="inherit" onClick={() => setAccountDialogOpenState(true)}>
+                        <Tooltip
+                            TransitionComponent={Zoom}
+                            title={userAccount ? "Logged In" : "Login"}
+                        >
                             <AccountCircleRounded />
                         </Tooltip>
                     </IconButton>
@@ -81,6 +100,39 @@ const App: React.SFC<AppProps> = () => {
                 <Route path="/movies" render={(props) => <MoviePage {...props} />} />
                 <Route path="/" render={(props) => <Homepage {...props} />} />
             </Switch>
+            <Dialog open={accountDialogIsOpen} onClose={() => setAccountDialogOpenState(false)}>
+                <List>
+                    <ListItem
+                        button
+                        onClick={() => {
+                            history.push("/account");
+                            setAccountDialogOpenState(false);
+                        }}
+                    >
+                        <ListItemAvatar>
+                            <Avatar className={classes.avatarIcon}>
+                                <AccountCircleRounded />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText>Account</ListItemText>
+                    </ListItem>
+                    <ListItem
+                        button
+                        onClick={() => {
+                            clearUser();
+                            history.push("/");
+                            setAccountDialogOpenState(false);
+                        }}
+                    >
+                        <ListItemAvatar>
+                            <Avatar className={classes.avatarIcon}>
+                                <ExitToAppRounded />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText>Logout</ListItemText>
+                    </ListItem>
+                </List>
+            </Dialog>
         </>
     );
 };
