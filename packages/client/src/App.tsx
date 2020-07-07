@@ -22,7 +22,7 @@ import { AccountCircleRounded, ExitToAppRounded, ShoppingCartRounded } from "@ma
 import jwt from "jsonwebtoken";
 import queryString from "query-string";
 import * as React from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation, withRouter } from "react-router-dom";
 import { apiURL } from ".";
 import LoginPage from "./components/authentication/login/LoginPage";
 import Homepage from "./components/homepage/Homepage";
@@ -31,6 +31,7 @@ import MoviePage from "./components/movies/MoviesPage";
 import SessionPage from "./components/sessions/SessionPage";
 import { AuthenticationContext } from "./contexts/AuthenticationContext";
 import ProtectedRoute from "./contexts/ProtectedRoute";
+import { HexString } from "./utils/hexEncode";
 
 export interface AppProps {}
 
@@ -92,7 +93,7 @@ const App: React.SFC<AppProps> = () => {
                         | string
                         | undefined;
 
-                    if (continueURL) return history.replace(atob(continueURL));
+                    if (continueURL) return history.replace(HexString.decode(continueURL));
                 } catch (error) {
                     console.log("Not previously logged in correctly");
                 }
@@ -108,6 +109,12 @@ const App: React.SFC<AppProps> = () => {
                 <Toolbar>
                     <Button className={classes.titleButton} onClick={() => history.push("/")}>
                         SPX Cinemas
+                    </Button>
+                    <Button
+                        className={classes.titleButton}
+                        onClick={() => history.push("/account")}
+                    >
+                        Account
                     </Button>
                     <Button
                         // startIcon={<MovieRounded />}
@@ -129,7 +136,11 @@ const App: React.SFC<AppProps> = () => {
                         onClick={() =>
                             userAccount
                                 ? setAccountDialogOpenState(true)
-                                : history.push(`/login?continue=${btoa(history.location.pathname)}`)
+                                : history.push(
+                                      `/login?continue=${HexString.create(
+                                          history.location.pathname
+                                      )}`
+                                  )
                         }
                     >
                         <Tooltip
@@ -142,7 +153,7 @@ const App: React.SFC<AppProps> = () => {
                 </Toolbar>
             </AppBar>
             <Switch>
-                <Route path="/login" render={(props) => <LoginPage {...props} />} />
+                <Route path="/login" component={LoginPage} />
                 <ProtectedRoute
                     path="/account"
                     render={(props) => <Typography>You have reached the account page</Typography>}
@@ -153,6 +164,7 @@ const App: React.SFC<AppProps> = () => {
                     render={(props) => <IndividualMoviePage {...props} />}
                 />
                 <Route path="/movies" render={(props) => <MoviePage {...props} />} />
+
                 <Route path="/" render={(props) => <Homepage {...props} />} />
             </Switch>
             <Dialog open={accountDialogIsOpen} onClose={() => setAccountDialogOpenState(false)}>
@@ -192,4 +204,4 @@ const App: React.SFC<AppProps> = () => {
     );
 };
 
-export default App;
+export default withRouter(App);
