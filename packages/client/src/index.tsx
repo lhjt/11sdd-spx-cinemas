@@ -7,11 +7,12 @@ import "typeface-source-sans-pro";
 import { Provider } from "urql";
 import App from "./App";
 import AuthenticationContextProvider from "./contexts/AuthenticationContext";
+import CartProvider from "./contexts/Cart";
 import { client } from "./contexts/urqlClient";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
 
-export const apiURL = (path: string) => `https://api.dev.amplixa.com${path}`;
+export const apiURL = (path: string) => `https://api.dultic.com${path}`;
 
 const muiTheme = createMuiTheme({
     palette: {
@@ -32,18 +33,20 @@ const muiTheme = createMuiTheme({
 });
 
 ReactDOM.render(
-    <Provider value={client}>
-        <ThemeProvider theme={muiTheme}>
-            <AuthenticationContextProvider>
-                <BrowserRouter>
-                    <React.StrictMode>
-                        <CssBaseline />
-                        <App />
-                    </React.StrictMode>
-                </BrowserRouter>
-            </AuthenticationContextProvider>
-        </ThemeProvider>
-    </Provider>,
+    <CartProvider>
+        <Provider value={client}>
+            <ThemeProvider theme={muiTheme}>
+                <AuthenticationContextProvider>
+                    <BrowserRouter>
+                        <React.StrictMode>
+                            <CssBaseline />
+                            <App />
+                        </React.StrictMode>
+                    </BrowserRouter>
+                </AuthenticationContextProvider>
+            </ThemeProvider>
+        </Provider>
+    </CartProvider>,
     document.getElementById("root")
 );
 

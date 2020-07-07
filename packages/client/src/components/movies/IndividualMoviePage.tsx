@@ -14,6 +14,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
 import { useQuery } from "urql";
+import ScrollToTop from "../../utils/ScrollToTop";
 import SessionsOverviewCard from "./movie-card/SessionsOverviewCard";
 import SkeletonSessionsOverviewCard from "./movie-card/SkeletonSessionsOverviewCard";
 
@@ -138,6 +139,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
 
     return (
         <>
+            <ScrollToTop />
             <Helmet>
                 <title>{name} - SPX Cinemas</title>
             </Helmet>

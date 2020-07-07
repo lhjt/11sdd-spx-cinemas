@@ -96,8 +96,15 @@ export class DatabaseController {
                 {
                     $lookup: {
                         from: "seats",
-                        localField: "theatre._id",
-                        foreignField: "theatre",
+                        let: { theatreId: "$theatre._id" },
+                        pipeline: [
+                            {
+                                $match: { $expr: { $eq: ["$theatre", "$$theatreId"] } },
+                            },
+                            {
+                                $sort: { row: -1, seatNumber: 1 },
+                            },
+                        ],
                         as: "allSeats",
                     },
                 },

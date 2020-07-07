@@ -32,7 +32,7 @@ async function startServer(): Promise<void> {
 
     app.use(
         cors({
-            origin: ["http://localhost:3000", "https://dev.amplixa.com"],
+            origin: ["http://localhost:3000", "https://dev.amplixa.com", "https://dultic.com"],
             credentials: true,
         })
     );

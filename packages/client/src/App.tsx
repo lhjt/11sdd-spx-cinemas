@@ -25,11 +25,13 @@ import * as React from "react";
 import { Route, Switch, useHistory, useLocation, withRouter } from "react-router-dom";
 import { apiURL } from ".";
 import LoginPage from "./components/authentication/login/LoginPage";
+import CartPage from "./components/cart/CartPage";
 import Homepage from "./components/homepage/Homepage";
 import IndividualMoviePage from "./components/movies/IndividualMoviePage";
 import MoviePage from "./components/movies/MoviesPage";
 import SessionPage from "./components/sessions/SessionPage";
 import { AuthenticationContext } from "./contexts/AuthenticationContext";
+import { CartContext } from "./contexts/Cart";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import { HexString } from "./utils/hexEncode";
 
@@ -103,18 +105,16 @@ const App: React.SFC<AppProps> = () => {
         })();
     }, []);
 
+    const { cart } = React.useContext(CartContext);
+
+    const numberOfTickets = cart.map((b) => b.seats).flat(1).length;
+
     return (
         <>
             <AppBar position="sticky" color="secondary">
                 <Toolbar>
                     <Button className={classes.titleButton} onClick={() => history.push("/")}>
                         SPX Cinemas
-                    </Button>
-                    <Button
-                        className={classes.titleButton}
-                        onClick={() => history.push("/account")}
-                    >
-                        Account
                     </Button>
                     <Button
                         // startIcon={<MovieRounded />}
@@ -124,9 +124,16 @@ const App: React.SFC<AppProps> = () => {
                         Movies
                     </Button>
                     <div className={classes.grow} />
-                    <IconButton>
-                        <Tooltip TransitionComponent={Zoom} title="3 Tickets in Cart">
-                            <Badge color="primary" badgeContent={3}>
+                    <IconButton onClick={() => history.push("/cart")}>
+                        <Tooltip
+                            TransitionComponent={Zoom}
+                            title={
+                                cart.length === 0
+                                    ? "No Tickets in Cart"
+                                    : `${numberOfTickets} Tickets in cart`
+                            }
+                        >
+                            <Badge color="primary" badgeContent={numberOfTickets}>
                                 <ShoppingCartRounded />
                             </Badge>
                         </Tooltip>
@@ -158,6 +165,7 @@ const App: React.SFC<AppProps> = () => {
                     path="/account"
                     render={(props) => <Typography>You have reached the account page</Typography>}
                 />
+                <Route path="/cart" component={CartPage} />
                 <Route path="/sessions/:sessionId" render={(props) => <SessionPage {...props} />} />
                 <Route
                     path="/movies/:movieId"
