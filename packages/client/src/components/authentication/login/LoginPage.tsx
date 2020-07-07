@@ -88,15 +88,10 @@ const LoginPage = withStyles(styles)(
                         method: "POST",
                         credentials: "include",
                     });
-
                     if (d.status !== 200) throw new Error("Failed to refresh");
-
                     const data = await d.text();
-
                     console.log(data);
-
                     const continueURL = this.parseLoginDetails(data);
-
                     if (continueURL)
                         return this.props.history.replace(HexString.decode(continueURL));
                     this.props.history.replace("/");
@@ -176,9 +171,15 @@ const LoginPage = withStyles(styles)(
         };
 
         render() {
-            if (this.state.loadingRefresh) return <CircularProgress />;
-
             const { classes } = this.props;
+
+            if (this.state.loadingRefresh)
+                return (
+                    <div className={classes.root}>
+                        <CircularProgress />
+                    </div>
+                );
+
             return (
                 <div className={classes.root}>
                     <Card
@@ -212,6 +213,7 @@ const LoginPage = withStyles(styles)(
                                     onKeyDown={(k) => {
                                         if (k.key === "Enter") this.handleSubmit();
                                     }}
+                                    autoComplete="email"
                                 />
                                 <TextField
                                     variant="filled"
@@ -228,6 +230,7 @@ const LoginPage = withStyles(styles)(
                                     onKeyDown={(k) => {
                                         if (k.key === "Enter") this.handleSubmit();
                                     }}
+                                    autoComplete="current-password"
                                 />
                             </form>
                             <Button

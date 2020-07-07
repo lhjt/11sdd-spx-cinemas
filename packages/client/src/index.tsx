@@ -11,7 +11,7 @@ import { client } from "./contexts/urqlClient";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
 
-export const apiURL = (path: string) => `http://localhost:3001${path}`;
+export const apiURL = (path: string) => `https://api.dev.amplixa.com${path}`;
 
 const muiTheme = createMuiTheme({
     palette: {
