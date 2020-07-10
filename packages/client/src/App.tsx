@@ -31,7 +31,7 @@ import IndividualMoviePage from "./components/movies/IndividualMoviePage";
 import MoviePage from "./components/movies/MoviesPage";
 import SessionPage from "./components/sessions/SessionPage";
 import { AuthenticationContext } from "./contexts/AuthenticationContext";
-import { CartContext } from "./contexts/Cart";
+import { CartContext, useCart } from "./contexts/Cart";
 import ProtectedRoute from "./contexts/ProtectedRoute";
 import { HexString } from "./utils/hexEncode";
 
@@ -62,12 +62,14 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const App: React.SFC<AppProps> = () => {
     const { clearUser, setUser, userAccount } = React.useContext(AuthenticationContext);
-
+    const { creatingBooking } = useCart();
     const [accountDialogIsOpen, setAccountDialogOpenState] = React.useState(false);
 
     const classes = useStyles();
     const history = useHistory();
     const location = useLocation();
+
+    if (creatingBooking && location.pathname !== "/cart") history.replace("/cart");
 
     React.useEffect(() => {
         (async () => {
@@ -113,10 +115,15 @@ const App: React.SFC<AppProps> = () => {
         <>
             <AppBar position="sticky" color="secondary">
                 <Toolbar>
-                    <Button className={classes.titleButton} onClick={() => history.push("/")}>
+                    <Button
+                        className={classes.titleButton}
+                        onClick={() => history.push("/")}
+                        disabled={creatingBooking}
+                    >
                         SPX Cinemas
                     </Button>
                     <Button
+                        disabled={creatingBooking}
                         // startIcon={<MovieRounded />}
                         className={classes.button}
                         onClick={() => history.push("/movies")}
@@ -124,7 +131,7 @@ const App: React.SFC<AppProps> = () => {
                         Movies
                     </Button>
                     <div className={classes.grow} />
-                    <IconButton onClick={() => history.push("/cart")}>
+                    <IconButton onClick={() => history.push("/cart")} disabled={creatingBooking}>
                         <Tooltip
                             TransitionComponent={Zoom}
                             title={
@@ -139,6 +146,7 @@ const App: React.SFC<AppProps> = () => {
                         </Tooltip>
                     </IconButton>
                     <IconButton
+                        disabled={creatingBooking}
                         color="inherit"
                         onClick={() =>
                             userAccount

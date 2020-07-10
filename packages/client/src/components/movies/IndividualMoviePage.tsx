@@ -84,6 +84,15 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom: theme.spacing(2),
             borderRadius: 5,
         },
+        doesNotExist: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        doesNotExistCard: {
+            margin: theme.spacing(4),
+            padding: theme.spacing(4),
+        },
     })
 );
 
@@ -130,6 +139,15 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
                     <SkeletonSessionsOverviewCard />
                     <div></div>
                 </div>
+            </div>
+        );
+
+    if (!data.getMovie)
+        return (
+            <div className={css(classes.doesNotExist, AnimationClassNames.slideUpIn20)}>
+                <Card className={classes.doesNotExistCard}>
+                    <Typography align="center">This movie does not exist.</Typography>
+                </Card>
             </div>
         );
 

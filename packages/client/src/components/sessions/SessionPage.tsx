@@ -118,6 +118,15 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(2),
         },
         seatingCardContent: { flexGrow: 1, display: "flex", alignItems: "center" },
+        doesNotExist: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        doesNotExistCard: {
+            margin: theme.spacing(4),
+            padding: theme.spacing(4),
+        },
     })
 );
 
@@ -144,6 +153,15 @@ const SessionPage: React.SFC<SessionPageProps> = () => {
 
     if (fetching || stale) return <CircularProgress />;
 
+    if (!data.getSession)
+        return (
+            <div className={css(classes.doesNotExist, AnimationClassNames.slideUpIn20)}>
+                <Card className={classes.doesNotExistCard}>
+                    <Typography align="center">This session does not exist.</Typography>
+                </Card>
+            </div>
+        );
+
     const {
         getSession: {
             allSeats,
@@ -167,8 +185,6 @@ const SessionPage: React.SFC<SessionPageProps> = () => {
     const addSeat = (seat: ReservedSeat) => setSelectedSeats([...selectedSeats, seat]);
     const removeSeat = (seat: ReservedSeat) =>
         setSelectedSeats([...selectedSeats.filter((s) => s.id !== seat.id)]);
-
-    console.log("Selected Seats", selectedSeats);
 
     return (
         <>

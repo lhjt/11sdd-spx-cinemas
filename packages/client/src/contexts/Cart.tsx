@@ -19,11 +19,15 @@ export interface CartProviderProps {}
 
 export const CartContext = React.createContext<{
     cart: SessionBooking[];
+    creatingBooking: boolean;
+    setCreatingBooking: (b: boolean) => void;
     addToCart: (sb: SessionBooking) => void;
     removeFromCart: (id: string) => void;
     setCart: (sbs: SessionBooking[]) => void;
 }>({
     cart: [],
+    creatingBooking: false,
+    setCreatingBooking: (b: boolean) => {},
     addToCart: (sb: SessionBooking) => {},
     removeFromCart: (id: string) => {},
     setCart: (sbs: SessionBooking[]) => {},
@@ -36,6 +40,7 @@ const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         localStorage.getItem("cart") ? JSON.parse(localStorage.getItem("cart")!) : []
     );
     const [didMount, setDidMount] = React.useState(false);
+    const [creatingBooking, setCreatingBooking] = React.useState(false);
 
     useEffect(() => {
         if (!didMount) {
@@ -56,7 +61,16 @@ const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     const setCartState = (sessionBookings: SessionBooking[]) => setCart(sessionBookings);
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, setCart: setCartState }}>
+        <CartContext.Provider
+            value={{
+                cart,
+                addToCart,
+                removeFromCart,
+                setCart: setCartState,
+                creatingBooking,
+                setCreatingBooking,
+            }}
+        >
             {children}
         </CartContext.Provider>
     );
