@@ -145,6 +145,7 @@ export class ReservationResolver {
 
         reservation.user = user;
         reservation.userId = user.id;
+        reservation.reservationDate = new Date();
 
         const reservationDocument = new ReservationModel(reservation);
 

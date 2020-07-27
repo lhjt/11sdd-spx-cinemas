@@ -12,7 +12,7 @@ import { client } from "./contexts/urqlClient";
 import "./index.scss";
 import * as serviceWorker from "./serviceWorker";
 
-export const apiURL = (path: string) => `https://api.dultic.com${path}`;
+export const apiURL = (path: string) => `https://dultic.com${path}`;
 
 const muiTheme = createMuiTheme({
     palette: {

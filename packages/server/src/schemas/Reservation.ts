@@ -21,6 +21,10 @@ export class Reservation {
     @Field(() => SessionSeat)
     @prop({ ref: SessionSeat, index: true })
     seats!: Ref<SessionSeat>[];
+
+    @Field(() => Date)
+    @prop()
+    reservationDate!: Date;
 }
 
 export const ReservationModel = getModelForClass(Reservation);

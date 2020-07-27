@@ -3,7 +3,7 @@ import { apiURL } from "..";
 
 export interface AuthenticationContextProps {}
 
-interface UserAccount {
+export interface UserAccount {
     uid: string;
     jwt: string;
 }

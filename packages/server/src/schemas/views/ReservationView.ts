@@ -57,4 +57,7 @@ export class ReservationView {
 
     @Field(() => ReservationSessionSeat)
     seats!: ReservationSessionSeat[];
+
+    @Field(() => Date)
+    reservationDate!: Date;
 }

@@ -14,7 +14,6 @@ import {
     Theme,
     Toolbar,
     Tooltip,
-    Typography,
     Zoom,
 } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
@@ -24,6 +23,8 @@ import queryString from "query-string";
 import * as React from "react";
 import { Route, Switch, useHistory, useLocation, withRouter } from "react-router-dom";
 import { apiURL } from ".";
+import AccountPage from "./components/account/AccountPage";
+import CreatedReservationPage from "./components/account/CreatedReservationPage";
 import LoginPage from "./components/authentication/login/LoginPage";
 import CartPage from "./components/cart/CartPage";
 import Homepage from "./components/homepage/Homepage";
@@ -170,9 +171,10 @@ const App: React.SFC<AppProps> = () => {
             <Switch>
                 <Route path="/login" component={LoginPage} />
                 <ProtectedRoute
-                    path="/account"
-                    render={(props) => <Typography>You have reached the account page</Typography>}
+                    path="/account/reservations/:reservationId"
+                    component={CreatedReservationPage}
                 />
+                <ProtectedRoute path="/account" component={AccountPage} />
                 <Route path="/cart" component={CartPage} />
                 <Route path="/sessions/:sessionId" render={(props) => <SessionPage {...props} />} />
                 <Route
