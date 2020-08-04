@@ -153,9 +153,9 @@ const CreatedReservationPage: React.SFC<CreatedReservationPageProps> = () => {
                             <ListItemText
                                 primary={`${
                                     s.session.movie.name
-                                } - Seat ${s.seat.row.toUpperCase()}${s.seat.seatNumber} @ ${
-                                    s.session.theatre.name
-                                }`}
+                                } - Seat ${s.seat.row.toUpperCase()}${
+                                    s.seat.seatNumber
+                                } | Cinema: ${s.session.theatre.name}`}
                                 secondary={`${DateTime.fromISO(s.session.startTime).toLocaleString(
                                     DateTime.DATETIME_SHORT
                                 )}`}

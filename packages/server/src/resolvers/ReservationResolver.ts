@@ -154,8 +154,13 @@ export class ReservationResolver {
             // Get the seats from the database based on the id
             const seatDocument = await SeatModel.findOne({ id: seatId });
             if (!seatDocument) throw new Error("Specified seat does not exist.");
-            if (await this.seatIsAlreadyBooked(sessionId, seatId))
-                throw new Error(`${seatId} ${sessionId}`);
+            if (await this.seatIsAlreadyBooked(sessionId, seatId)) {
+                throw new Error(
+                    `The seat ${seatDocument.row.toUpperCase()}${
+                        seatDocument.seatNumber
+                    } has already been booked`
+                );
+            }
 
             // Find the session
             const sessionDocument = await SessionModel.findOne({ id: sessionId });

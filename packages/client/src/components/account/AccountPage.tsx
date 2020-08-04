@@ -91,7 +91,7 @@ const AccountPage: React.SFC<AccountPageProps> = () => {
         );
 
     const {
-        getUserDetails: { firstName, lastName, reservations },
+        getUserDetails: { firstName, reservations },
     } = data as UserDetails;
 
     return (

@@ -45,6 +45,7 @@ export async function createUsers(quantity: number): Promise<void> {
         reservation.seats = [];
         reservation.user = userDocument;
         reservation.userId = userDocument.id;
+        reservation.reservationDate = faker.date.recent(5);
         const reservationDocument = new ReservationModel(reservation);
 
         const seats = [];
