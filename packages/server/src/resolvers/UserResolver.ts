@@ -1,3 +1,4 @@
+import { UserInputError } from "apollo-server-express";
 import bcrypt from "bcrypt";
 import {
     Arg,
@@ -53,6 +54,10 @@ export class UserResolver {
         user.createdAt = new Date();
         user.role = Role.customer;
         user.password = await bcrypt.hash(password, 3);
+
+        const checkUser = await UserModel.findOne({ email });
+        if (checkUser)
+            throw new UserInputError(`Invalid email: ${email} has already been registered.`);
 
         console.log(user);
 

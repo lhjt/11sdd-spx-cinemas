@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import { MovieRounded } from "@material-ui/icons";
 import * as React from "react";
+import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "urql";
 import { AuthenticationContext, UserAccount } from "../../contexts/AuthenticationContext";
@@ -96,6 +97,9 @@ const AccountPage: React.SFC<AccountPageProps> = () => {
 
     return (
         <Card variant="outlined" className={css(classes.root, AnimationClassNames.slideUpIn20)}>
+            <Helmet>
+                <title>Account - SPX Cinemas</title>
+            </Helmet>
             <CardHeader
                 title={`Welcome, ${firstName}`}
                 subheader="Here are your reservations with us"

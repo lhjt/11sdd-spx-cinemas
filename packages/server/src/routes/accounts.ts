@@ -43,6 +43,7 @@ accountsRouter.post("/refresh", cookieParser(), (req, res) => {
     if (!req.cookies._r) return res.sendStatus(400);
     const uid = TC.instance.checkRefreshToken(req.cookies._r);
     if (!uid) return res.clearCookie("_r").sendStatus(401);
+
     const token = TC.instance.createJWT(uid);
     res.cookie("_r", TC.instance.createRefreshToken(uid), {
         httpOnly: true,

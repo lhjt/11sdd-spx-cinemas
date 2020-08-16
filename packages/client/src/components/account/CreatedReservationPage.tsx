@@ -18,6 +18,7 @@ import { EventSeatRounded } from "@material-ui/icons";
 import { DateTime } from "luxon";
 import QRCode from "qrcode.react";
 import * as React from "react";
+import { Helmet } from "react-helmet";
 import { useHistory, useRouteMatch } from "react-router";
 import { useQuery } from "urql";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext";
@@ -49,6 +50,7 @@ query getReservationDetails($uid: String!, $rid: String!) {
             id
             session {
                 movie {
+                    id
                     name
                 }
                 startTime
@@ -73,6 +75,7 @@ interface reservationData {
             id: string;
             session: {
                 movie: {
+                    id: string;
                     name: string;
                 };
                 startTime: string;
@@ -121,6 +124,9 @@ const CreatedReservationPage: React.SFC<CreatedReservationPageProps> = () => {
 
     return (
         <Card className={css(classes.root, AnimationClassNames.slideUpIn20)}>
+            <Helmet>
+                <title>Reservation - SPX Cinemas</title>
+            </Helmet>
             <CardHeader title="Reservation Details" />
             <CardContent>
                 <div className={classes.bookingReference}>
@@ -144,7 +150,11 @@ const CreatedReservationPage: React.SFC<CreatedReservationPageProps> = () => {
                 </div>
                 <List>
                     {seats.map((s) => (
-                        <ListItem key={s.id}>
+                        <ListItem
+                            button
+                            onClick={() => history.push(`/movies/${s.session.movie.id}`)}
+                            key={s.id}
+                        >
                             <ListItemAvatar>
                                 <Avatar>
                                     <EventSeatRounded />

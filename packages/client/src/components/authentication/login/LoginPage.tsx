@@ -5,6 +5,10 @@ import {
     CardContent,
     CircularProgress,
     createStyles,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     LinearProgress,
     Snackbar,
     TextField,
@@ -31,6 +35,10 @@ export interface LoginPageState {
     passwordValue: string;
     loggingIn: boolean;
     invalidCredentials: boolean;
+    registerOpen: boolean;
+    firstNameValue: string;
+    lastNameValue: string;
+    emailAlreadyExists: boolean;
 }
 
 const styles = (theme: Theme) =>
@@ -58,7 +66,20 @@ const styles = (theme: Theme) =>
         emailInput: {
             marginBottom: theme.spacing(2),
         },
+        registerLink: {
+            textAlign: "center",
+            cursor: "pointer",
+            marginTop: "-1rem",
+        },
     });
+
+const createUserMutation = `
+mutation createUser($data: CreateUserArgs!) {
+    createUser(userDetails:$data) {
+        id
+    }
+}
+`;
 
 export interface LoginPageProps
     extends RouteComponentProps<{ continue: string }>,
@@ -77,6 +98,10 @@ const LoginPage = withStyles(styles)(
                 passwordValue: "",
                 loggingIn: false,
                 invalidCredentials: false,
+                registerOpen: false,
+                firstNameValue: "",
+                lastNameValue: "",
+                emailAlreadyExists: false,
             };
         }
 
@@ -105,6 +130,39 @@ const LoginPage = withStyles(styles)(
                 console.log("Logged in already");
             }
         }
+
+        private register = async () => {
+            this.setState({ loggingIn: true });
+            console.log(apiURL.toString());
+            const result = await fetch(apiURL("/graph"), {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    query: createUserMutation,
+                    variables: {
+                        data: {
+                            firstName: this.state.firstNameValue,
+                            lastName: this.state.lastNameValue,
+                            email: this.state.emailValue,
+                            password: this.state.passwordValue,
+                        },
+                    },
+                    operationName: "createUser",
+                }),
+            });
+
+            const data = await result.json();
+            if (data.errors?.length > 0) {
+                setTimeout(() => {
+                    this.setState({ emailAlreadyExists: false });
+                }, 5000);
+                this.setState({ loggingIn: false });
+                return this.setState({ emailAlreadyExists: true });
+            }
+
+            this.setState({ loggingIn: false });
+            return this.login();
+        };
 
         private login = async () => {
             console.log("Attempting to login...");
@@ -242,11 +300,125 @@ const LoginPage = withStyles(styles)(
                             >
                                 {this.state.loggingIn ? "One sec..." : "Login"}
                             </Button>
+                            <Button
+                                variant="text"
+                                color="primary"
+                                onClick={() => this.setState({ registerOpen: true })}
+                                className={classes.registerLink}
+                                style={{ display: this.state.loggingIn ? "none" : "inline" }}
+                            >
+                                Register
+                            </Button>
                         </CardContent>
                     </Card>
                     <Snackbar open={this.state.invalidCredentials} autoHideDuration={3000}>
-                        <Alert severity="error">Invalid Credentials</Alert>
+                        <Alert severity="error">
+                            Invalid credentials. Did you mean to register?
+                        </Alert>
                     </Snackbar>
+                    <Snackbar open={this.state.emailAlreadyExists}>
+                        <Alert severity="error">
+                            The email you are trying to register has already been registered.
+                        </Alert>
+                    </Snackbar>
+                    <Dialog
+                        maxWidth="xs"
+                        open={this.state.registerOpen}
+                        onClose={() => this.setState({ registerOpen: false })}
+                        aria-labelledby="form-dialog-title"
+                    >
+                        <DialogTitle id="form-dialog-title">Register</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                className={classes.emailInput}
+                                variant="filled"
+                                label="First Name"
+                                fullWidth
+                                type="text"
+                                value={this.state.firstNameValue}
+                                onChange={(v) =>
+                                    this.setState({
+                                        firstNameValue: v.currentTarget.value,
+                                        invalidCredentials: false,
+                                    })
+                                }
+                                onKeyDown={(k) => {
+                                    if (k.key === "Enter") this.register();
+                                }}
+                                autoComplete="last-name"
+                            />
+                            <TextField
+                                className={classes.emailInput}
+                                variant="filled"
+                                label="Last Name"
+                                fullWidth
+                                type="text"
+                                value={this.state.lastNameValue}
+                                onChange={(v) =>
+                                    this.setState({
+                                        lastNameValue: v.currentTarget.value,
+                                        invalidCredentials: false,
+                                    })
+                                }
+                                onKeyDown={(k) => {
+                                    if (k.key === "Enter") this.register();
+                                }}
+                                autoComplete="last-name"
+                            />
+                            <TextField
+                                className={classes.emailInput}
+                                variant="filled"
+                                label="Email"
+                                fullWidth
+                                type="email"
+                                value={this.state.emailValue}
+                                error={!this.isValidEmail()}
+                                helperText={!this.isValidEmail() ? "Invalid Email" : undefined}
+                                onChange={(v) =>
+                                    this.setState({
+                                        emailValue: v.currentTarget.value,
+                                        invalidCredentials: false,
+                                    })
+                                }
+                                onKeyDown={(k) => {
+                                    if (k.key === "Enter") this.register();
+                                }}
+                                autoComplete="email"
+                            />
+                            <TextField
+                                variant="filled"
+                                label="Password"
+                                fullWidth
+                                type="password"
+                                value={this.state.passwordValue}
+                                onChange={(v) =>
+                                    this.setState({
+                                        passwordValue: v.currentTarget.value,
+                                        invalidCredentials: false,
+                                    })
+                                }
+                                onKeyDown={(k) => {
+                                    if (k.key === "Enter") this.register();
+                                }}
+                                autoComplete="current-password"
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                disabled={
+                                    !(
+                                        !this.canSubmit() &&
+                                        this.state.firstNameValue.length !== 0 &&
+                                        this.state.lastNameValue.length !== 0
+                                    ) || this.state.loggingIn
+                                }
+                                onClick={this.register}
+                                color="primary"
+                            >
+                                Register
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
             );
         }
