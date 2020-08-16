@@ -25,8 +25,6 @@
 import uuid from "uuid";
 import { Classification, Movie } from "../schemas/Movie";
 
-// TODO: Get trailer URLs for the movies
-
 export const movies: Movie[] = [
     {
         classification: Classification.PG,
@@ -40,6 +38,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BY2NmZDAwM2QtZmFiMS00OTJlLTgxMTItZDMyZmVhYjE1MDY3XkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_SX300.jpg",
         rating: 3.7,
+        trailerURL: "https://www.youtube.com/watch?v=mjKEXxO2KNE",
     },
     {
         classification: Classification.R,
@@ -53,6 +52,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SX300.jpg",
         rating: 2.9499999999999997,
+        trailerURL: "https://www.youtube.com/watch?v=zAGVQLHvwOY",
     },
     {
         classification: Classification.PG,
@@ -66,6 +66,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMzczYzk4NWUtY2I0NC00OWEzLTgxYzAtOGM3NGU1ZjZlOGQxXkEyXkFqcGdeQXVyMDA4NzMyOA@@._V1_SX300.jpg",
         rating: 2.45,
+        trailerURL: "https://www.youtube.com/watch?v=gF4yRYbo1WE",
     },
     {
         classification: Classification.PG,
@@ -79,6 +80,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BN2E4ZDgxN2YtZjExMS00MWE5LTg3NjQtNTkxMzJhOTA3MDQ4XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
         rating: 3.1,
+        trailerURL: "https://www.youtube.com/watch?v=-ieuv_84nmc",
     },
     {
         classification: Classification.PG,
@@ -92,6 +94,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMjAyOTUzMTcxN15BMl5BanBnXkFtZTgwMjkyOTc1MDE@._V1_SX300.jpg",
         rating: 2.6,
+        trailerURL: "https://www.youtube.com/watch?v=xPLSpmAtc1Q",
     },
     {
         classification: Classification.R,
@@ -105,6 +108,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BNDYzMzg5OTA0Ml5BMl5BanBnXkFtZTgwNjQzNzExMjE@._V1_SX300.jpg",
         rating: 1.7999999999999998,
+        trailerURL: "https://www.youtube.com/watch?v=72i4w3aOmeI",
     },
     {
         classification: Classification.R,
@@ -117,6 +121,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMjkxOTk1MzY4MF5BMl5BanBnXkFtZTgwODQzOTU5ODE@._V1_SX300.jpg",
         rating: 3.3000000000000003,
+        trailerURL: "https://www.youtube.com/watch?v=S8eNbjt928Q",
     },
     {
         classification: Classification.PG,
@@ -130,6 +135,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMTc5MDE2ODcwNV5BMl5BanBnXkFtZTgwMzI2NzQ2NzM@._V1_SX300.jpg",
         rating: 3.9000000000000004,
+        trailerURL: "https://www.youtube.com/watch?v=TcMBFSGVi1c",
     },
     {
         classification: Classification.PG,
@@ -143,6 +149,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMDZkODI2ZGItYTY5Yi00MTA4LWExY2ItM2ZmNjczYjM0NDg1XkEyXkFqcGdeQXVyMzY0MTE3NzU@._V1_SX300.jpg",
         rating: 1.9,
+        trailerURL: "https://www.youtube.com/watch?v=BV-WEb2oxLk",
     },
     {
         classification: Classification.PG,
@@ -156,6 +163,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMTg1MTY2MjYzNV5BMl5BanBnXkFtZTgwMTc4NTMwNDI@._V1_SX300.jpg",
         rating: 4.4,
+        trailerURL: "https://www.youtube.com/watch?v=xjDjIWPwcPU",
     },
     {
         classification: Classification.PG,
@@ -169,6 +177,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BOTVjMmFiMDUtOWQ4My00YzhmLWE3MzEtODM1NDFjMWEwZTRkXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SX300.jpg",
         rating: 2.9,
+        trailerURL: "https://www.youtube.com/watch?v=rBxcF-r9Ibs",
     },
     {
         classification: Classification.PG,
@@ -182,6 +191,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BZjU0Yzk2MzEtMjAzYy00MzY0LTg2YmItM2RkNzdkY2ZhN2JkXkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_SX300.jpg",
         rating: 2.9,
+        trailerURL: "https://www.youtube.com/watch?v=tL4McUzXfFI",
     },
     {
         classification: Classification.PG,
@@ -195,6 +205,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMGUwZjliMTAtNzAxZi00MWNiLWE2NzgtZGUxMGQxZjhhNDRiXkEyXkFqcGdeQXVyNjU1NzU3MzE@._V1_SX300.jpg",
         rating: 4.1,
+        trailerURL: "https://www.youtube.com/watch?v=sL-9Khv7wa4",
     },
     {
         classification: Classification.PG,
@@ -208,6 +219,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BYzA5Y2Q2YjktZDYwMi00NTdmLThlMjctMmY5NDgwOWRhZDUxXkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
         rating: 2.3499999999999996,
+        trailerURL: "https://www.youtube.com/watch?v=l9laReRAYFk",
     },
     {
         classification: Classification.R,
@@ -221,6 +233,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BOTdmNTFjNDEtNzg0My00ZjkxLTg1ZDAtZTdkMDc2ZmFiNWQ1XkEyXkFqcGdeQXVyNTAzNzgwNTg@._V1_SX300.jpg",
         rating: 3.9000000000000004,
+        trailerURL: "https://www.youtube.com/watch?v=YqNYrYUiMfg",
     },
     {
         classification: Classification.R,
@@ -234,6 +247,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BZTliNWJhM2YtNDc1MC00YTk1LWE2MGYtZmE4M2Y5ODdlNzQzXkEyXkFqcGdeQXVyMzY0MTE3NzU@._V1_SX300.jpg",
         rating: 4.050000000000001,
+        trailerURL: "https://www.youtube.com/watch?v=hNCmb-4oXJA",
     },
     {
         classification: Classification.PG,
@@ -247,6 +261,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BZTllZTdlOGEtZTBmMi00MGQ5LWFjN2MtOGEyZTliNGY1MzFiXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
         rating: 4,
+        trailerURL: "https://www.youtube.com/watch?v=P6AaSMfXHbA",
     },
     {
         classification: Classification.R,
@@ -260,6 +275,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
         rating: 4.8,
+        trailerURL: "https://www.youtube.com/watch?v=5xH0HfJHsaY",
     },
     {
         classification: Classification.R,
@@ -273,6 +289,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMGUyM2ZiZmUtMWY0OC00NTQ4LThkOGUtNjY2NjkzMDJiMWMwXkEyXkFqcGdeQXVyMzY0MTE3NzU@._V1_SX300.jpg",
         rating: 4.699999999999999,
+        trailerURL: "https://www.youtube.com/watch?v=WHXxVmeGQUc",
     },
     {
         classification: Classification.PG,
@@ -286,6 +303,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMTYxNDMyOTAxN15BMl5BanBnXkFtZTgwMDg1ODYzNTM@._V1_SX300.jpg",
         rating: 3.7,
+        trailerURL: "https://www.youtube.com/watch?v=ZQ-YX-5bAs0",
     },
     {
         classification: Classification.R,
@@ -299,6 +317,7 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BMjE1MTM4NDAzOF5BMl5BanBnXkFtZTgwNTMwNjI0MzE@._V1_SX300.jpg",
         rating: 2.3000000000000003,
+        trailerURL: "https://www.youtube.com/watch?v=SfZWFDs0LxA",
     },
     {
         classification: Classification.R,
@@ -312,5 +331,6 @@ export const movies: Movie[] = [
         poster:
             "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg",
         rating: 4.75,
+        trailerURL: "https://www.youtube.com/watch?v=sY1S34973zA",
     },
 ];

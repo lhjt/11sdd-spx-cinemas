@@ -64,6 +64,10 @@ export class Movie implements MovieBase {
     @Field()
     @prop()
     poster!: string;
+
+    @Field()
+    @prop()
+    trailerURL!: string;
 }
 
 export const MovieModel = getModelForClass(Movie);

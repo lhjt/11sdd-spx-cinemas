@@ -135,6 +135,7 @@ export async function createMovies(): Promise<void> {
         movie.plot = movieData.plot;
         movie.poster = movieData.poster;
         movie.rating = movieData.rating;
+        movie.trailerURL = movieData.trailerURL;
 
         const movieDocument = new MovieModel(movie);
         awaitingMovies.push(movieDocument);
