@@ -31,6 +31,7 @@ query getMovie($movieId: String!) {
         duration
         plot
         poster
+        trailerURL
     }
 }
 `;
@@ -45,6 +46,7 @@ interface MovieData {
         name: string;
         plot: string;
         poster: string;
+        trailerURL: string;
     };
 }
 
