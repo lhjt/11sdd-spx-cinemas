@@ -101,7 +101,10 @@ export async function createSessions(quantity: number): Promise<void> {
     for (let i = 0; i < quantity; i++) {
         const session = new Session();
         session.id = uuid.v4();
-        session.startTime = faker.date.recent();
+        session.startTime = faker.date.between(
+            new Date(),
+            DateTime.local().plus({ weeks: 2 }).toJSDate()
+        );
         const movieDocuments: DocumentType<Movie>[] = await MovieModel.aggregate([
             { $match: {} },
             { $sample: { size: 1 } },
@@ -148,7 +151,7 @@ export async function createTheatres(): Promise<void> {
     for (let i = 0; i < 3; i++) {
         const theatre = new Theatre();
         theatre.id = uuid.v4();
-        theatre.name = faker.random.word().toLowerCase();
+        theatre.name = (i + 1).toString();
         const theatreDocument = new TheatreModel(theatre);
         await theatreDocument.save();
         waitingPromises.push(theatreDocument.save());

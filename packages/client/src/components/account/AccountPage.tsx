@@ -14,6 +14,7 @@ import {
     Theme,
 } from "@material-ui/core";
 import { MovieRounded } from "@material-ui/icons";
+import { DateTime } from "luxon";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
@@ -35,8 +36,10 @@ query getUserDetails($userId: String!) {
     getUserDetails(userId:$userId) {
         firstName
         lastName
+        email
         reservations {
             id
+            reservationDate
             seats {
                 id
                 session {
@@ -55,8 +58,10 @@ interface UserDetails {
     getUserDetails: {
         firstName: string;
         lastName: string;
+        email: string;
         reservations: {
             id: string;
+            reservationDate: string;
             seats: {
                 id: string;
                 session: {
@@ -92,7 +97,7 @@ const AccountPage: React.SFC<AccountPageProps> = () => {
         );
 
     const {
-        getUserDetails: { firstName, reservations },
+        getUserDetails: { firstName, email, reservations },
     } = data as UserDetails;
 
     return (
@@ -102,7 +107,7 @@ const AccountPage: React.SFC<AccountPageProps> = () => {
             </Helmet>
             <CardHeader
                 title={`Welcome, ${firstName}`}
-                subheader="Here are your reservations with us"
+                subheader={`${email} | Here are your reservations with us`}
             />
             <CardContent>
                 <List>
@@ -129,7 +134,9 @@ const AccountPage: React.SFC<AccountPageProps> = () => {
                                     new Set(e.seats.map((s) => s.session.movie.name)).size > 1
                                         ? "Movies"
                                         : "Movie"
-                                }`}
+                                } - Booked On: ${DateTime.fromISO(e.reservationDate).toLocaleString(
+                                    DateTime.DATE_MED
+                                )}`}
                             />
                         </ListItem>
                     ))}

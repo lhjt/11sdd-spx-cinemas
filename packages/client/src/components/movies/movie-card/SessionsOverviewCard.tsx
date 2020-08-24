@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
             height: "100%",
         },
         sessionPill: {
-            width: 200,
+            width: 225,
             marginBottom: theme.spacing(2),
             marginRight: theme.spacing(2),
         },

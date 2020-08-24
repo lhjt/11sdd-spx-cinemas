@@ -15,7 +15,7 @@ async function startServer(): Promise<void> {
     await DatabaseController.initialise("mongodb://localhost:27017/spx-cinemas");
     // await createTheatres();
     // await createMovies();
-    // await createSessions(50);
+    // await createSessions(200);
     // createUsers(200);
 
     const schema = await buildSchema({
@@ -32,7 +32,7 @@ async function startServer(): Promise<void> {
 
     app.use(
         cors({
-            origin: ["http://localhost:3000", "https://dev.amplixa.com", "https://dultic.com"],
+            origin: ["http://localhost:3000"],
             credentials: true,
         })
     );

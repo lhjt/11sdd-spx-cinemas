@@ -15,6 +15,7 @@
         "@types/qrcode.react": "^1.0.1",
         "@types/react": "^16.9.41",
         "@types/react-dom": "^16.9.8",
+        "@types/react-youtube": "^7.6.2",
         "graphql": "^15.2.0",
         "jsonwebtoken": "^8.5.1",
         "luxon": "^1.24.1",
@@ -27,6 +28,7 @@
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
         "react-scripts": "3.4.1",
+        "react-youtube": "^7.12.0",
         "typeface-source-sans-pro": "^1.1.5",
         "typescript": "~3.7.2",
         "urql": "^1.9.8"

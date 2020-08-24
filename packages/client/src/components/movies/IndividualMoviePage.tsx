@@ -1,23 +1,28 @@
 import { AnimationClassNames, css } from "@fluentui/react";
 import {
+    AppBar,
     Button,
     Card,
     CardContent,
     CardHeader,
     createStyles,
+    Dialog,
+    IconButton,
     makeStyles,
     Theme,
+    Toolbar,
     Typography,
 } from "@material-ui/core";
+import { CloseRounded } from "@material-ui/icons";
 import { Skeleton } from "@material-ui/lab";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router";
+import YouTube from "react-youtube";
 import { useQuery } from "urql";
 import ScrollToTop from "../../utils/ScrollToTop";
 import SessionsOverviewCard from "./movie-card/SessionsOverviewCard";
 import SkeletonSessionsOverviewCard from "./movie-card/SkeletonSessionsOverviewCard";
-
 export interface IndividualMoviePageProps {}
 
 const movieQuery = `
@@ -95,12 +100,17 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(4),
             padding: theme.spacing(4),
         },
+        ytDialog: {
+            height: "100%",
+        },
     })
 );
 
 const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
     const classes = useStyles();
     const { movieId } = useParams<{ movieId: string }>();
+
+    const [isOpen, setOpen] = React.useState(false);
 
     const [results] = useQuery({
         query: movieQuery,
@@ -154,7 +164,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
         );
 
     const {
-        getMovie: { classification, director, duration, genre, id, name, plot, poster },
+        getMovie: { classification, director, duration, genre, id, name, plot, poster, trailerURL },
     } = data as MovieData;
 
     return (
@@ -163,6 +173,31 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
             <Helmet>
                 <title>{name} - SPX Cinemas</title>
             </Helmet>
+            <Dialog fullScreen open={isOpen}>
+                <AppBar>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={() => setOpen(false)}
+                            aria-label="close"
+                        >
+                            <CloseRounded />
+                        </IconButton>
+                    </Toolbar>
+                </AppBar>
+                <YouTube
+                    containerClassName={classes.ytDialog}
+                    videoId={trailerURL.split("?v=")[1]}
+                    opts={{
+                        height: "100%",
+                        width: "100%",
+                        playerVars: {
+                            autoplay: 1,
+                        },
+                    }}
+                />
+            </Dialog>
             <div className={css(classes.container, AnimationClassNames.slideUpIn20)}>
                 <Card variant="outlined" className={classes.infoCard}>
                     <CardHeader
@@ -186,6 +221,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
                             variant="outlined"
                             color="primary"
                             className={classes.trailerButton}
+                            onClick={() => setOpen(true)}
                         >
                             Watch Trailer
                         </Button>
@@ -198,5 +234,4 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
         </>
     );
 };
-
 export default IndividualMoviePage;
