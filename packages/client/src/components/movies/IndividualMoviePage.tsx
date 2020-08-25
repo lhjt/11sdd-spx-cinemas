@@ -218,7 +218,7 @@ const IndividualMoviePage: React.SFC<IndividualMoviePageProps> = () => {
                             Classification: {classification}
                         </Typography>
                         <Button
-                            variant="outlined"
+                            variant="contained"
                             color="primary"
                             className={classes.trailerButton}
                             onClick={() => setOpen(true)}

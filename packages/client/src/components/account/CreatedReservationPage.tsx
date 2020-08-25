@@ -1,6 +1,7 @@
 import { AnimationClassNames, css } from "@fluentui/react";
 import {
     Avatar,
+    Button,
     Card,
     CardContent,
     CardHeader,
@@ -20,7 +21,7 @@ import QRCode from "qrcode.react";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useHistory, useRouteMatch } from "react-router";
-import { useQuery } from "urql";
+import { useMutation, useQuery } from "urql";
 import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 
 export interface CreatedReservationPageProps {}
@@ -45,7 +46,7 @@ const reservationQuery = `
 query getReservationDetails($uid: String!, $rid: String!) {
     getReservation(userId:$uid, reservationId: $rid) {
         id
-        # reservationDate
+        reservationDate
         seats {
             id
             session {
@@ -71,6 +72,7 @@ query getReservationDetails($uid: String!, $rid: String!) {
 interface reservationData {
     getReservation: {
         id: string;
+        reservationDate: string;
         seats: {
             id: string;
             session: {
@@ -105,6 +107,12 @@ const CreatedReservationPage: React.SFC<CreatedReservationPageProps> = () => {
         variables: { uid: account.userAccount!.uid, rid },
     });
 
+    const [mutationResult, executeMutation] = useMutation<{
+        cancelBooking: string;
+    }>(`mutation cancelBooking($id:String!) {
+        cancelBooking(id:$id)
+      }`);
+
     const { fetching, data, error } = result;
 
     if (fetching && !data) return <CircularProgress />;
@@ -120,7 +128,25 @@ const CreatedReservationPage: React.SFC<CreatedReservationPageProps> = () => {
         return <div></div>;
     }
 
-    const { id, seats } = reservationData;
+    const { id, seats, reservationDate } = reservationData;
+
+    const cancelBooking = async () => {
+        const mutationResult = await executeMutation({
+            id,
+        });
+
+        console.log(mutationResult);
+        history.replace("/account");
+    };
+
+    function canDelete(): boolean {
+        const seatDates = seats.map((s) => new Date(s.session.startTime));
+        for (const date of seatDates) {
+            if (date < new Date()) return false;
+        }
+
+        return true;
+    }
 
     return (
         <Card className={css(classes.root, AnimationClassNames.slideUpIn20)}>
@@ -147,6 +173,16 @@ const CreatedReservationPage: React.SFC<CreatedReservationPageProps> = () => {
                     <Typography variant="body1" color="textSecondary">
                         Present this to the cinema staff for scanning
                     </Typography>
+                    {canDelete() && (
+                        <Button
+                            onClick={() => cancelBooking()}
+                            style={{ marginTop: "1rem" }}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Cancel Reservation
+                        </Button>
+                    )}
                 </div>
                 <List>
                     {seats.map((s) => (

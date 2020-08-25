@@ -19,13 +19,14 @@ import {
     Tooltip,
     Typography,
 } from "@material-ui/core";
-import { green, red } from "@material-ui/core/colors";
+import { blue, green, red } from "@material-ui/core/colors";
 import { CloseRounded, EventSeatRounded } from "@material-ui/icons";
 import { DateTime } from "luxon";
 import * as React from "react";
 import { Helmet } from "react-helmet";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { useQuery } from "urql";
+import { AuthenticationContext } from "../../contexts/AuthenticationContext";
 import { ReservedSeat, SessionBooking, useCart } from "../../contexts/Cart";
 import ScrollToTop from "../../utils/ScrollToTop";
 
@@ -43,6 +44,9 @@ query getSession($sessionId: String!) {
         startTime
         endTime
         reservedSeats {
+            reservation {
+                userId
+            }
             seat {
                 id
             }
@@ -69,6 +73,9 @@ interface SessionData {
         startTime: string;
         endTime: string;
         reservedSeats: {
+            reservation: {
+                userId: string;
+            };
             seat: {
                 id: string;
             };
@@ -135,6 +142,7 @@ const SessionPage: React.SFC<SessionPageProps> = () => {
     const { setCart, cart } = useCart();
     const match = useRouteMatch<{ sessionId: string }>();
     const history = useHistory();
+    const account = React.useContext(AuthenticationContext);
 
     const { sessionId } = match.params;
 
@@ -179,7 +187,11 @@ const SessionPage: React.SFC<SessionPageProps> = () => {
      * @param id Seat ID
      */
     function isReserved(id: string) {
-        return reservedSeatIds.includes(id);
+        const seatList = reservedSeatObjects.filter((s) => s.seat.id === id);
+        console.log("seatList:", seatList);
+        if (seatList.length === 1) {
+            return seatList[0].reservation.userId;
+        } else return false;
     }
 
     const addSeat = (seat: ReservedSeat) => setSelectedSeats([...selectedSeats, seat]);
@@ -209,8 +221,14 @@ const SessionPage: React.SFC<SessionPageProps> = () => {
                                 <div>
                                     <div className={classes.seatingGrid}>
                                         {allSeats.map((s) =>
-                                            isReserved(s.id) ? (
-                                                <Tooltip arrow title="Reserved Seat">
+                                            isReserved(s.id) === account.userAccount?.uid ? (
+                                                <Tooltip arrow title={"Reserved by you"}>
+                                                    <EventSeatRounded
+                                                        style={{ color: blue[400] }}
+                                                    />
+                                                </Tooltip>
+                                            ) : isReserved(s.id) ? (
+                                                <Tooltip arrow title={"Reserved Seat"}>
                                                     <EventSeatRounded style={{ color: red[400] }} />
                                                 </Tooltip>
                                             ) : selectedSeats
@@ -248,7 +266,7 @@ const SessionPage: React.SFC<SessionPageProps> = () => {
                         <Divider flexItem orientation="vertical" />
                         <CardContent>
                             <div className={classes.sideInfo}>
-                                <List dense style={{ flexGrow: 1, overflowY: "scroll" }}>
+                                <List dense style={{ flexGrow: 1, overflowY: "auto" }}>
                                     {selectedSeats.map((s) => (
                                         <ListItem className={AnimationClassNames.slideUpIn20}>
                                             <ListItemAvatar>

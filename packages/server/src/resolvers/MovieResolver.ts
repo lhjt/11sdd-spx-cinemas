@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import { Arg, FieldResolver, Query, Resolver, Root } from "type-graphql";
 import { Movie, MovieBase, MovieModel } from "../schemas/Movie";
 import { SessionsView, SessionsViewModel } from "../schemas/views/SessionsView";
@@ -18,7 +19,7 @@ export class MovieResolver {
     async sessions(@Root() movie: MovieBase): Promise<SessionsView[]> {
         return await SessionsViewModel.find({
             "movie.id": movie.id,
-            startTime: { $gte: new Date() },
+            startTime: { $gte: new Date(), $lte: DateTime.local().plus({ days: 7 }).toJSDate() },
         }).lean();
     }
 }
