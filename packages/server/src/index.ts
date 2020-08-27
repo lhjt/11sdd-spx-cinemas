@@ -4,6 +4,12 @@ import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { DatabaseController } from "./classes/DatabaseController";
+import {
+    createMovies,
+    createSessions,
+    createTheatres,
+    createUsers,
+} from "./classes/seeders/generators";
 import { MovieResolver } from "./resolvers/MovieResolver";
 import { ReservationResolver } from "./resolvers/ReservationResolver";
 import { SessionResolver } from "./resolvers/SessionResolver";
@@ -13,10 +19,14 @@ import { accountsRouter } from "./routes/accounts";
 import "./schemas/views/SessionsView";
 async function startServer(): Promise<void> {
     await DatabaseController.initialise("mongodb://localhost:27017/spx-cinemas");
-    // await createTheatres();
-    // await createMovies();
-    // await createSessions(200);
-    // createUsers(200);
+    if (process.env.NODE_ENV === "setup") {
+        await createTheatres();
+        await createMovies();
+        await createSessions(200);
+        await createUsers(200);
+
+        process.exit(0);
+    }
 
     const schema = await buildSchema({
         resolvers: [

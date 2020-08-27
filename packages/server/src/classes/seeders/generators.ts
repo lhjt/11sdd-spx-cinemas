@@ -77,7 +77,7 @@ export async function createUsers(quantity: number): Promise<void> {
             seats.push(sessionSeatDocument);
         }
 
-        SessionSeatModel.insertMany(seats);
+        await SessionSeatModel.insertMany(seats);
 
         reservationDocument.seats = [...seats];
         // promises.push(reservationDocument.save());

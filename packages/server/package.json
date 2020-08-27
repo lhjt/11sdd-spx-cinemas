@@ -1,6 +1,6 @@
 {
     "name": "server",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "",
     "main": "build/index.js",
     "types": "build/index.d.ts",
@@ -8,6 +8,8 @@
         "prestart": "tsc",
         "start": "cross-env NODE_ENV=production node .",
         "dev": "tsc-watch --onSuccess \"node .\"",
+        "pregenerate": "tsc",
+        "generate": "node .",
         "create-docker-image": "docker build --tag spx-server .",
         "preexport-docker-image": "docker build --tag spx-server .",
         "export-docker-image": "docker save --output spx-server-image.tar spx-server"
